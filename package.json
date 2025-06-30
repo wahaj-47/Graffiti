@@ -1,0 +1,41 @@
+{
+  "name": "rtmd",
+  "version": "1.0.0",
+  "description": "Realtime Markdown Editor",
+  "keywords": [
+    "markdown",
+    "realtime",
+    "sharejs"
+  ],
+  "license": "ISC",
+  "author": "Wahaj Hussain",
+  "type": "commonjs",
+  "main": "dist/server.js",
+  "scripts": {
+    "start": "tsc && browserify dist/client.js -o public/bundle.js && node dist/server.js",
+    "lint": "eslint src/**/*.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.30.0",
+    "@types/ejs": "^3.1.5",
+    "@types/express": "^5.0.3",
+    "@types/sharedb": "^5.1.0",
+    "@types/showdown": "^2.0.6",
+    "eslint": "^9.30.0",
+    "globals": "^16.2.0",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.35.0"
+  },
+  "dependencies": {
+    "@teamwork/websocket-json-stream": "^2.0.0",
+    "browserify": "^17.0.1",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "reconnecting-websocket": "^4.4.0",
+    "sharedb": "^5.2.2",
+    "sharedb-string-binding": "^1.0.0",
+    "showdown": "^2.1.0",
+    "ws": "^8.18.3"
+  }
+}

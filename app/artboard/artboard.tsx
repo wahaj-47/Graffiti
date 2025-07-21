@@ -100,5 +100,5 @@ export function Artboard() {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="bg-white" />;
+  return <canvas ref={canvasRef} className="bg-white w-full h-full" />;
 }

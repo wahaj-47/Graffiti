@@ -1,10 +1,14 @@
 import "react-router";
 import { createRequestHandler } from "@react-router/express";
 import express from "express";
+import { connectDB } from "./config/db";
+import piece from "./services/Piece";
+
+await connectDB();
 
 declare module "react-router" {
   interface AppLoadContext {
-    VALUE_FROM_EXPRESS: string;
+    piece: typeof piece;
   }
 }
 
@@ -15,7 +19,7 @@ app.use(
     build: () => import("virtual:react-router/server-build"),
     getLoadContext() {
       return {
-        VALUE_FROM_EXPRESS: "Open /piece/{identifier} to create a new artboard",
+        piece: piece,
       };
     },
   })

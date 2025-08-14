@@ -1,8 +1,9 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import compression from "compression";
 import express from "express";
 import morgan from "morgan";
-import { WebSocketServer } from 'ws'
-import { setupWSConnection } from '@y/websocket-server/utils'
 
 // Short-circuit the type-checking of the built output.
 const BUILD_PATH = "./build/server/index.js";
@@ -47,8 +48,3 @@ if (DEVELOPMENT) {
 const server = app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
-
-const wss = new WebSocketServer({ server });
-wss.on("connection", (con, req) => {
-  setupWSConnection(con, req);
-})

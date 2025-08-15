@@ -3,10 +3,10 @@ import {
   deletePiece,
   getPieceById,
   updatePiece,
-} from "server/controllers/Piece";
-import type { TPiece } from "server/models/Piece";
+} from "database/controllers/Piece";
+import type { Piece } from "database/schema";
 
-const piece: Service<TPiece> = {
+const piece: Service<Piece> = {
   create: createPiece,
   read: getPieceById,
   update: updatePiece,

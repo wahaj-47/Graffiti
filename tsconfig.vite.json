@@ -7,7 +7,7 @@
     "app/**/.client/**/*",
     "database/**/*",
     "server/**/*",
-    "types.d.ts"
+    "types.ts"
   ],
   "compilerOptions": {
     "composite": true,

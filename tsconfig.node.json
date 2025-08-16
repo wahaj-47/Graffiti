@@ -1,6 +1,6 @@
 {
   "extends": "./tsconfig.json",
-  "include": ["socket/**/*", "server.ts", "vite.config.ts"],
+  "include": ["server.js", "vite.config.ts", "socket/**/*.ts"],
   "compilerOptions": {
     "composite": true,
     "strict": true,
@@ -8,6 +8,9 @@
     "lib": ["ES2022"],
     "target": "ES2022",
     "module": "ES2022",
-    "moduleResolution": "bundler"
+    "moduleResolution": "bundler",
+    "paths": {
+      "~/*": ["./*"]
+    }
   }
 }

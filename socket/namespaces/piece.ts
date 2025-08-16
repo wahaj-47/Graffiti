@@ -1,6 +1,8 @@
-import { Socket } from "socket.io";
+import type { Namespace, Socket } from "socket.io";
+import { io } from "~/server";
 
-export function connect(socket: Socket) {
-  console.log("Someone connected to ns piece");
+const nsPiece: Namespace = io.of("/piece");
+nsPiece.on("connection", (socket: Socket) => {
+  console.log("Connected to namespace piece");
   socket.join("piece:{id}");
-}
+});

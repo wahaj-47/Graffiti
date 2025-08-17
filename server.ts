@@ -3,9 +3,13 @@ dotenv.config();
 
 import compression from "compression";
 import express from "express";
+import type { Request, Response, NextFunction } from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import morgan from "morgan";
+
+import nsPieceHandler from "./socket/piece";
+import type { ViteDevServer } from "vite";
 
 // Short-circuit the type-checking of the built output.
 const BUILD_PATH = "./build/server/index.js";
@@ -20,13 +24,13 @@ app.disable("x-powered-by");
 
 if (DEVELOPMENT) {
   console.log("Starting development server");
-  const viteDevServer = await import("vite").then((vite) =>
+  const viteDevServer: ViteDevServer = await import("vite").then((vite) =>
     vite.createServer({
       server: { middlewareMode: true },
     })
   );
   app.use(viteDevServer.middlewares);
-  app.use(async (req, res, next) => {
+  app.use(async (req: Request, res: Response, next: NextFunction) => {
     try {
       const source = await viteDevServer.ssrLoadModule("./server/app.ts");
       return await source.app(req, res, next);
@@ -50,17 +54,6 @@ if (DEVELOPMENT) {
 
 const io = new Server(httpServer);
 const nsPiece = io.of("/piece");
-nsPiece.on("connection", (socket) => {
-  console.log(`Client connected: ${socket.id}`)
-
-  socket.on("piece:join", (pieceId) => {
-    console.log(`Client joined: ${pieceId}`);
-    socket.join(`piece-${pieceId}`);
-  })
-
-  socket.on("disconnect", () => {
-    console.log(`Client disconnected: ${socket.id}`);
-  });
-});
+nsPiece.on("connection", nsPieceHandler);
 
 httpServer.listen(PORT);

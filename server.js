@@ -14,6 +14,9 @@ const PORT = Number.parseInt(process.env.PORT || "3000");
 
 const app = express();
 const httpServer = createServer(app);
+const io = new Server(httpServer);
+
+const piece = io.of("/piece");
 
 app.use(compression());
 app.disable("x-powered-by");
@@ -26,9 +29,9 @@ if (DEVELOPMENT) {
     })
   );
   app.use(viteDevServer.middlewares);
+  const source = await viteDevServer.ssrLoadModule("./server/app.ts");
   app.use(async (req, res, next) => {
     try {
-      const source = await viteDevServer.ssrLoadModule("./server/app.ts");
       return await source.app(req, res, next);
     } catch (error) {
       if (typeof error === "object" && error instanceof Error) {
@@ -37,6 +40,7 @@ if (DEVELOPMENT) {
       next(error);
     }
   });
+  piece.on("connection", source.nsPiece);
 } else {
   console.log("Starting production server");
   app.use(
@@ -45,14 +49,9 @@ if (DEVELOPMENT) {
   );
   app.use(morgan("tiny"));
   app.use(express.static("build/client", { maxAge: "1h" }));
-  app.use(await import(BUILD_PATH).then((mod) => mod.app));
+  const mod = await import(BUILD_PATH)
+  app.use(mod.app);
+  piece.on("connection", mod.nsPiece);
 }
-
-const io = new Server(httpServer);
-const piece = io.of("/piece");
-piece.on(
-  "connection",
-  await import(BUILD_PATH).then((mod) => mod.nsPiece)
-);
 
 httpServer.listen(PORT);

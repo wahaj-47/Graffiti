@@ -48,6 +48,19 @@ if (DEVELOPMENT) {
   app.use(await import(BUILD_PATH).then((mod) => mod.app));
 }
 
-export const io = new Server(httpServer);
+const io = new Server(httpServer);
+const nsPiece = io.of("/piece");
+nsPiece.on("connection", (socket) => {
+  console.log(`Client connected: ${socket.id}`)
+
+  socket.on("piece:join", (pieceId) => {
+    console.log(`Client joined: ${pieceId}`);
+    socket.join(`piece-${pieceId}`);
+  })
+
+  socket.on("disconnect", () => {
+    console.log(`Client disconnected: ${socket.id}`);
+  });
+});
 
 httpServer.listen(PORT);

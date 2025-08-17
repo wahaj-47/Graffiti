@@ -1,6 +1,6 @@
 import type { Socket } from "socket.io";
 
-export default function nsPieceHandler(socket: Socket) {
+export function nsPiece(socket: Socket) {
   console.log(`Client connected: ${socket.id}`);
 
   socket.on("piece:join", (pieceId) => {

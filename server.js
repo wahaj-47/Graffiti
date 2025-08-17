@@ -3,13 +3,9 @@ dotenv.config();
 
 import compression from "compression";
 import express from "express";
-import type { Request, Response, NextFunction } from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import morgan from "morgan";
-
-import nsPieceHandler from "./socket/piece";
-import type { ViteDevServer } from "vite";
 
 // Short-circuit the type-checking of the built output.
 const BUILD_PATH = "./build/server/index.js";
@@ -24,13 +20,13 @@ app.disable("x-powered-by");
 
 if (DEVELOPMENT) {
   console.log("Starting development server");
-  const viteDevServer: ViteDevServer = await import("vite").then((vite) =>
+  const viteDevServer = await import("vite").then((vite) =>
     vite.createServer({
       server: { middlewareMode: true },
     })
   );
   app.use(viteDevServer.middlewares);
-  app.use(async (req: Request, res: Response, next: NextFunction) => {
+  app.use(async (req, res, next) => {
     try {
       const source = await viteDevServer.ssrLoadModule("./server/app.ts");
       return await source.app(req, res, next);
@@ -53,7 +49,10 @@ if (DEVELOPMENT) {
 }
 
 const io = new Server(httpServer);
-const nsPiece = io.of("/piece");
-nsPiece.on("connection", nsPieceHandler);
+const piece = io.of("/piece");
+piece.on(
+  "connection",
+  await import(BUILD_PATH).then((mod) => mod.nsPiece)
+);
 
 httpServer.listen(PORT);

@@ -6,6 +6,9 @@ import { pieceSchema } from "database/schema";
 import { DatabaseContext } from "database/context";
 import piece from "database/services/Piece";
 
+import { nsPiece } from "socket/namespace";
+export { nsPiece };
+
 declare module "react-router" {
   interface AppLoadContext {}
 }

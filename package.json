@@ -4,8 +4,8 @@
   "type": "module",
   "scripts": {
     "build": "react-router build",
-    "dev": "cross-env NODE_ENV=development tsx server.ts",
-    "start": "tsx server.ts",
+    "dev": "cross-env NODE_ENV=development node server.js",
+    "start": "node server.js",
     "typecheck": "react-router typegen && tsc -b"
   },
   "dependencies": {

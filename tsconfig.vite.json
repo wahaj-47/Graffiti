@@ -8,7 +8,8 @@
     "database/**/*",
     "server/**/*",
     "socket/**/*",
-    "types.ts"
+    "app/global.d.ts",
+    "app/graffiti"
   ],
   "compilerOptions": {
     "composite": true,

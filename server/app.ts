@@ -6,14 +6,13 @@ import { pieceSchema } from "database/schema";
 import { DatabaseContext } from "database/context";
 import piece from "database/services/Piece";
 
-import { nsPiece } from "socket/namespace";
-export { nsPiece };
+import { pieceRouter } from "socket/piece";
 
 declare module "react-router" {
   interface AppLoadContext {}
 }
 
-export const app = express();
+const app = express();
 
 if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is required");
 
@@ -31,3 +30,5 @@ app.use(
     },
   })
 );
+
+export { app, pieceRouter };

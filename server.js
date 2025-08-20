@@ -2,9 +2,8 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import compression from "compression";
-import express from "express";
-import { createServer } from "http";
-import { Server } from "socket.io";
+import { WebSocketExpress } from 'websocket-express'
+import { Hocuspocus } from "@hocuspocus/server"
 import morgan from "morgan";
 
 // Short-circuit the type-checking of the built output.
@@ -12,13 +11,18 @@ const BUILD_PATH = "./build/server/index.js";
 const DEVELOPMENT = process.env.NODE_ENV === "development";
 const PORT = Number.parseInt(process.env.PORT || "3000");
 
-const app = express();
-const httpServer = createServer(app);
-const io = new Server(httpServer);
+const app = new WebSocketExpress()
+const hocuspocus = new Hocuspocus({
+  name: "piece:hocuspocus",
+  onConfigure: async () => {
+    console.log(`Server configured - Connections: ${hocuspocus.getConnectionsCount()}`)
+  },
+  onConnect: async () => {
+    console.log(`Connection established - Connections: ${hocuspocus.getConnectionsCount()}`)
+  }
+});
 
-const piece = io.of("/piece");
-
-app.use(compression());
+app.useHTTP(compression());
 app.disable("x-powered-by");
 
 if (DEVELOPMENT) {
@@ -28,9 +32,9 @@ if (DEVELOPMENT) {
       server: { middlewareMode: true },
     })
   );
-  app.use(viteDevServer.middlewares);
+  app.useHTTP(viteDevServer.middlewares);
   const source = await viteDevServer.ssrLoadModule("./server/app.ts");
-  app.use(async (req, res, next) => {
+  app.useHTTP(async (req, res, next) => {
     try {
       return await source.app(req, res, next);
     } catch (error) {
@@ -40,18 +44,21 @@ if (DEVELOPMENT) {
       next(error);
     }
   });
-  piece.on("connection", source.nsPiece);
+  app.use("/join", source.pieceRouter(hocuspocus))
 } else {
   console.log("Starting production server");
-  app.use(
+
+  app.useHTTP(
     "/assets",
-    express.static("build/client/assets", { immutable: true, maxAge: "1y" })
+    WebSocketExpress.static("build/client/assets", { immutable: true, maxAge: "1y" })
   );
-  app.use(morgan("tiny"));
-  app.use(express.static("build/client", { maxAge: "1h" }));
+  app.useHTTP(morgan("tiny"));
+  app.useHTTP(WebSocketExpress.static("build/client", { maxAge: "1h" }));
   const mod = await import(BUILD_PATH)
-  app.use(mod.app);
-  piece.on("connection", mod.nsPiece);
+  app.useHTTP(mod.app);
+  app.use("/join", mod.pieceRouter(hocuspocus));
 }
 
-httpServer.listen(PORT);
+const server = app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});

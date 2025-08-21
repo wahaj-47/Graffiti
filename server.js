@@ -17,7 +17,7 @@ const hocuspocus = new Hocuspocus({
   onConfigure: async () => {
     console.log(`Server configured - Connections: ${hocuspocus.getConnectionsCount()}`)
   },
-  onConnect: async () => {
+  connected: async () => {
     console.log(`Connection established - Connections: ${hocuspocus.getConnectionsCount()}`)
   }
 });

@@ -1,8 +1,11 @@
+import { useEffect, useRef } from "react";
 import type { HocuspocusProvider } from "@hocuspocus/provider";
+import * as Y from "yjs";
 import { Application, extend } from "@pixi/react";
 import { Container, FederatedPointerEvent, Graphics, Rectangle } from "pixi.js";
-import { useCallback, useState } from "react";
 import { canUseDOM } from "~/client/utils";
+import { PaintBrush } from "~/graffiti/PaintBrush";
+import { type Tool } from "~/types";
 
 const WIDTH = 1280;
 const HEIGHT = 720;
@@ -15,26 +18,26 @@ type ArtboardProps = {
 };
 
 export function Artboard({ provider }: ArtboardProps) {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [color, setColor] = useState(0xc3b1e1);
-  const [strokes, setStrokes] = useState<BrushProps[]>([]);
+  const ydoc = useRef<Y.Doc>(null);
+  const tool = useRef<Tool>(new PaintBrush({ radius: 10, color: 0xc3b1e1 }));
+
+  useEffect(() => {
+    // ydoc.current = new Y.Doc();
+  }, []);
 
   const beginDrawing = (event: FederatedPointerEvent) => {
-    setStrokes((prevStrokes) => {
-      const newStroke: BrushProps = {
-        active: true,
-        color: color,
-      };
-
-      return [...prevStrokes, newStroke];
-    });
+    if (ydoc.current == null) return;
+    tool.current.onPointerDown(event, ydoc.current);
   };
 
-  const endDrawing = (event: FederatedPointerEvent) => {};
+  const endDrawing = (event: FederatedPointerEvent) => {
+    if (ydoc.current == null) return;
+    tool.current.onPointerUp(event, ydoc.current);
+  };
 
   const updatePosition = (event: FederatedPointerEvent) => {
-    const { x, y } = event.global;
-    setPosition({ x, y });
+    if (ydoc.current == null) return;
+    tool.current.onPointerMove(event, ydoc.current);
   };
 
   if (!canUseDOM) return;

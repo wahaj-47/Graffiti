@@ -5,11 +5,10 @@
     "app/**/*",
     "app/**/.server/**/*",
     "app/**/.client/**/*",
+    "app/**/graffiti/**/*",
     "database/**/*",
     "server/**/*",
-    "socket/**/*",
-    "app/global.d.ts",
-    "app/graffiti"
+    "socket/**/*"
   ],
   "compilerOptions": {
     "composite": true,

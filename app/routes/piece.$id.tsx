@@ -7,10 +7,11 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Piece({ params }: Route.ComponentProps) {
+  console.log("Piece");
   const { id } = params;
 
   const provider = useHocuspocusProvider({
-    path: "/piece",
+    path: "/join",
     name: `piece-${id}`,
   });
 

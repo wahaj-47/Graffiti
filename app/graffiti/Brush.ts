@@ -1,6 +1,6 @@
 import type { FederatedPointerEvent } from "pixi.js";
 import type { Doc } from "yjs";
-import type { Tool } from "./types";
+import type { Tool } from "~/types";
 
 export type BrushConfig = {
   color: string | number;

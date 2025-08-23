@@ -1,10 +1,17 @@
 import type { FederatedPointerEvent, PathInstruction } from "pixi.js";
-import type { Doc } from "yjs";
+import type { Array } from "yjs";
+
+export type Command = {
+  tool: string;
+  instructions: Array<unknown>;
+};
 
 export interface Tool {
-  onPointerDown(e: FederatedPointerEvent, doc: Doc): void;
-  onPointerMove(e: FederatedPointerEvent, doc: Doc): void;
-  onPointerUp(e: FederatedPointerEvent, doc: Doc): void;
+  readonly id: string;
+  onPointerDown(e: FederatedPointerEvent): unknown;
+  onPointerMove(e: FederatedPointerEvent): unknown;
+  onPointerUp(e: FederatedPointerEvent): void;
+  onPointerLeave(e: FederatedPointerEvent): void;
 }
 
 export type BrushProps = {

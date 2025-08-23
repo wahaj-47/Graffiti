@@ -1,5 +1,5 @@
-import type { FederatedPointerEvent } from "pixi.js";
-import type { Doc } from "yjs";
+import type { FederatedPointerEvent, PathInstruction } from "pixi.js";
+import { Array } from "yjs";
 import type { Tool } from "~/types";
 
 export type BrushConfig = {
@@ -7,16 +7,25 @@ export type BrushConfig = {
   radius: number;
 };
 
-export class Brush implements Tool {
+export abstract class Brush implements Tool {
+  public id;
   public color;
   public radius;
 
   constructor({ color, radius }: BrushConfig) {
+    this.id = "brush";
     this.color = color;
     this.radius = radius;
   }
 
-  onPointerDown(e: FederatedPointerEvent, doc: Doc) {}
-  onPointerMove(e: FederatedPointerEvent, doc: Doc) {}
-  onPointerUp(e: FederatedPointerEvent, doc: Doc) {}
+  abstract draw(e: FederatedPointerEvent): PathInstruction;
+
+  onPointerDown(e: FederatedPointerEvent) {
+    return this.draw(e);
+  }
+  onPointerMove(e: FederatedPointerEvent) {
+    return this.draw(e);
+  }
+  onPointerUp(e: FederatedPointerEvent) {}
+  onPointerLeave(e: FederatedPointerEvent) {}
 }

@@ -6,6 +6,8 @@ import type { BrushProps } from "~/types";
 extend({ Graphics });
 
 export function Brush({ instructions }: BrushProps) {
+  console.log(instructions);
+
   const draw = useCallback(
     (g: Graphics) => {
       const path = new GraphicsPath(instructions);

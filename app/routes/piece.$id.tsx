@@ -7,13 +7,15 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Piece({ params }: Route.ComponentProps) {
-  console.log("Piece");
   const { id } = params;
 
   const provider = useHocuspocusProvider({
     path: "/join",
     name: `piece-${id}`,
   });
+
+  // @TODO: Render a loading state
+  if (!provider) return;
 
   return (
     <div className="flex h-screen items-center justify-center">

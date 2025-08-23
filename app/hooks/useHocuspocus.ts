@@ -1,5 +1,5 @@
 import { HocuspocusProvider } from "@hocuspocus/provider";
-import { useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
 type HocuspocusProviderProps = {
   path: string;
@@ -7,7 +7,7 @@ type HocuspocusProviderProps = {
 };
 
 export function useHocuspocusProvider({ path, name }: HocuspocusProviderProps) {
-  const providerRef = useRef<HocuspocusProvider | null>(null);
+  const [provider, setProvider] = useState<HocuspocusProvider>();
 
   useEffect(() => {
     const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
@@ -19,13 +19,12 @@ export function useHocuspocusProvider({ path, name }: HocuspocusProviderProps) {
       name,
     });
 
-    providerRef.current = provider;
+    setProvider(provider);
 
     return () => {
       provider.destroy();
-      providerRef.current = null;
     };
   }, [name, path]);
 
-  return providerRef.current;
+  return provider;
 }

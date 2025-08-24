@@ -1,10 +1,7 @@
 import type { FederatedPointerEvent, PathInstruction } from "pixi.js";
-import type { Array } from "yjs";
+import type { Array, Map } from "yjs";
 
-export type Command = {
-  tool: string;
-  instructions: Array<unknown>;
-};
+export type Command = Map<string | Array<unknown>>;
 
 export interface Tool {
   readonly id: string;

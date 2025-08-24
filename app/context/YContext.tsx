@@ -49,15 +49,15 @@ export function YProvider({ name, path, children }: YProviderProps) {
     };
   }, [name, path]);
 
+  if (context == null) return null;
+
   return <YContext.Provider value={context}>{children}</YContext.Provider>;
 }
 
 export function useYProvider(): HocuspocusProvider {
   const context = useContext(YContext);
   if (!context) {
-    throw new Error(
-      "Hocuspocus hooks must be used within a HocuspocusProvider"
-    );
+    throw new Error("Y hooks must be used within a YProvider");
   }
   return context.provider;
 }
@@ -65,9 +65,7 @@ export function useYProvider(): HocuspocusProvider {
 export function useYDoc(): Doc {
   const context = useContext(YContext);
   if (!context) {
-    throw new Error(
-      "Hocuspocus hooks must be used within a HocuspocusProvider"
-    );
+    throw new Error("Y hooks must be used within a HocuspocusProvider");
   }
   return context.doc;
 }

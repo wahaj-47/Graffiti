@@ -5,8 +5,8 @@ export type Command = Map<string | Array<unknown>>;
 
 export interface Tool {
   readonly id: string;
-  onPointerDown(e: FederatedPointerEvent): unknown;
-  onPointerMove(e: FederatedPointerEvent): unknown;
+  onPointerDown(e: FederatedPointerEvent): Command;
+  onPointerMove(e: FederatedPointerEvent): void;
   onPointerUp(e: FederatedPointerEvent): void;
   onPointerLeave(e: FederatedPointerEvent): void;
 }

@@ -17,7 +17,7 @@ extend({ Container, Graphics });
 export function Artboard() {
   const state = useYArray<Command>("state", "deep");
 
-  const tool = useRef<Tool>(new PaintBrush({ radius: 10, color: 0xc3b1e1 }));
+  const tool = useRef<Tool>(new PaintBrush({ radius: 4, color: 0xc3b1e1 }));
 
   const onPointerDown = (event: FederatedPointerEvent) => {
     state.push([tool.current.onPointerDown(event)]);

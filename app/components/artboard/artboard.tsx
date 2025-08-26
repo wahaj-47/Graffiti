@@ -4,7 +4,7 @@ import { Application, extend } from "@pixi/react";
 import { Container, FederatedPointerEvent, Graphics, Rectangle } from "pixi.js";
 import { canUseDOM } from "~/client/utils";
 import { PaintBrush } from "~/graffiti/PaintBrush";
-import { type Command, type Tool } from "~/types";
+import { type Tool } from "~/types";
 import { useYArray } from "~/context/YContext";
 import { Brush } from "../tool/Brush";
 
@@ -15,12 +15,14 @@ const HIT = new Rectangle(0, 0, WIDTH, HEIGHT);
 extend({ Container, Graphics });
 
 export function Artboard() {
-  const state = useYArray<Command>("state", "deep");
+  const history = useYArray<string>("history");
+  const instructions = useYArray<Array<unknown>>("instructions", "none");
 
-  const tool = useRef<Tool>(new PaintBrush({ radius: 4, color: 0xc3b1e1 }));
+  const tool = useRef<Tool>(new PaintBrush({ radius: 10, color: 0xc3b1e1 }));
 
   const onPointerDown = (event: FederatedPointerEvent) => {
-    state.push([tool.current.onPointerDown(event)]);
+    history.push([tool.current.id]);
+    instructions.push([tool.current.onPointerDown(event)]);
   };
 
   const onPointerMove = (event: FederatedPointerEvent) => {
@@ -48,10 +50,9 @@ export function Artboard() {
         onPointerUp={onPointerUp}
         onPointerLeave={onPointerLeave}
       >
-        {state.toJSON().map((command, index) => {
-          return (
-            <Brush key={index} instructions={command.instructions}></Brush>
-          );
+        {history.toArray().map((command, index) => {
+          // @TODO: Switch component based on command
+          return <Brush key={index} index={index}></Brush>;
         })}
       </pixiContainer>
     </Application>

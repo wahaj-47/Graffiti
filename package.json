@@ -9,6 +9,7 @@
     "typecheck": "react-router typegen && tsc -b"
   },
   "dependencies": {
+    "@hocuspocus/extension-database": "^3.2.3",
     "@hocuspocus/provider": "^3.2.3",
     "@hocuspocus/server": "^3.2.3",
     "@pixi/react": "^8.0.1",

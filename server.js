@@ -3,7 +3,7 @@ dotenv.config();
 
 import compression from "compression";
 import { WebSocketExpress } from 'websocket-express'
-import { Hocuspocus } from "@hocuspocus/server"
+
 import morgan from "morgan";
 
 // Short-circuit the type-checking of the built output.
@@ -12,15 +12,6 @@ const DEVELOPMENT = process.env.NODE_ENV === "development";
 const PORT = Number.parseInt(process.env.PORT || "3000");
 
 const app = new WebSocketExpress()
-const hocuspocus = new Hocuspocus({
-  name: "piece:hocuspocus",
-  onConfigure: async () => {
-    console.log(`Server configured - Connections: ${hocuspocus.getConnectionsCount()}`)
-  },
-  connected: async () => {
-    console.log(`Connection established - Connections: ${hocuspocus.getConnectionsCount()}`)
-  }
-});
 
 app.useHTTP(compression());
 app.disable("x-powered-by");
@@ -33,9 +24,9 @@ if (DEVELOPMENT) {
     })
   );
   app.useHTTP(viteDevServer.middlewares);
-  const source = await viteDevServer.ssrLoadModule("./server/app.ts");
-  app.useHTTP(async (req, res, next) => {
+  app.use(async (req, res, next) => {
     try {
+      const source = await viteDevServer.ssrLoadModule("./server/app.ts");
       return await source.app(req, res, next);
     } catch (error) {
       if (typeof error === "object" && error instanceof Error) {
@@ -44,19 +35,15 @@ if (DEVELOPMENT) {
       next(error);
     }
   });
-  app.use("/join", source.pieceRouter(hocuspocus))
 } else {
   console.log("Starting production server");
-
   app.useHTTP(
     "/assets",
     WebSocketExpress.static("build/client/assets", { immutable: true, maxAge: "1y" })
   );
   app.useHTTP(morgan("tiny"));
   app.useHTTP(WebSocketExpress.static("build/client", { maxAge: "1h" }));
-  const mod = await import(BUILD_PATH)
-  app.useHTTP(mod.app);
-  app.use("/join", mod.pieceRouter(hocuspocus));
+  app.use(await import(BUILD_PATH).then((mod) => mod.app));
 }
 
 const server = app.listen(PORT, () => {

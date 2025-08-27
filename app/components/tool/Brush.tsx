@@ -8,11 +8,12 @@ import type { BrushProps } from "~/types";
 extend({ Graphics });
 
 export const Brush = memo(({ index }: BrushProps) => {
-  const i = useYArray<Array<unknown>>("instructions", "none");
-  const instructions: Array<unknown> = i.get(index);
+  const instructions = useYArray<Array<unknown>>("instructions", "none").get(
+    index
+  );
   useObserve(instructions, "deep");
 
-  const path = new GraphicsPath(instructions.toArray() as PathInstruction[]);
+  const path = new GraphicsPath(instructions?.toArray() as PathInstruction[]);
 
   const draw = useCallback(
     (g: Graphics) => {

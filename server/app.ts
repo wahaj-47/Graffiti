@@ -4,10 +4,12 @@ import express from "express";
 import mongoose from "mongoose";
 import { pieceSchema } from "database/schema";
 import { DatabaseContext } from "database/context";
+import { Database } from "@hocuspocus/extension-database";
 import piece from "database/services/Piece";
 
 import { Hocuspocus } from "@hocuspocus/server";
 import { pieceRouter } from "socket/piece";
+import * as Y from "yjs";
 
 declare module "react-router" {
   interface AppLoadContext {}
@@ -19,10 +21,29 @@ if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is required");
 
 const client = mongoose.createConnection(process.env.DATABASE_URL);
 client.model("Piece", pieceSchema);
-app.use((_, __, next) => DatabaseContext.run(client, next));
 
 const hocuspocus = new Hocuspocus({
   name: "piece:hocuspocus",
+  extensions: [
+    new Database({
+      fetch: async ({ documentName }) => {
+        return DatabaseContext.run(client, async () => {
+          const doc = await piece.read(documentName);
+          if (!doc) return null;
+
+          const { yDoc } = doc;
+          if (yDoc.length === 0) return null;
+
+          return yDoc;
+        });
+      },
+      store: async ({ documentName, state }) => {
+        return DatabaseContext.run(client, async () => {
+          piece.update(documentName, { yDoc: state });
+        });
+      },
+    }),
+  ],
   onConfigure: async () => {
     console.log(
       `Server configured - Connections: ${hocuspocus.getConnectionsCount()}`
@@ -34,6 +55,8 @@ const hocuspocus = new Hocuspocus({
     );
   },
 });
+
+app.use((_, __, next) => DatabaseContext.run(client, next));
 
 app.use("/join", pieceRouter(hocuspocus));
 

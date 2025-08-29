@@ -10,7 +10,7 @@ export default function Piece({ params }: Route.ComponentProps) {
   const { id } = params;
 
   return (
-    <YProvider path="/join" name={`piece-${id}`}>
+    <YProvider path="/join" name={`${id}`}>
       <div className="flex h-screen items-center justify-center">
         <Artboard></Artboard>
       </div>

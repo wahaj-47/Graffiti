@@ -1,8 +1,16 @@
 import { Document, Schema, type InferSchemaType } from "mongoose";
+import { Doc, encodeStateAsUpdateV2 } from "yjs";
 
 export const pieceSchema = new Schema(
   {
-    title: { type: String, required: true },
+    title: {
+      type: String,
+      required: true,
+    },
+    yDoc: {
+      type: Buffer,
+      default: () => Buffer.alloc(0),
+    },
   },
   { timestamps: true }
 );

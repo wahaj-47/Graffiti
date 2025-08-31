@@ -8,7 +8,7 @@ export type BrushConfig = {
 };
 
 export abstract class Brush implements Tool {
-  private instructions: Array<unknown> | undefined;
+  protected instructions: Array<unknown> | undefined;
 
   public id;
   public color;
@@ -22,25 +22,8 @@ export abstract class Brush implements Tool {
     this.radius = radius;
   }
 
-  abstract draw(e: FederatedPointerEvent): PathInstruction;
-
-  onPointerDown(e: FederatedPointerEvent): Array<unknown> {
-    this.instructions = new Array();
-    this.instructions.push([this.draw(e)]);
-    return this.instructions;
-  }
-
-  onPointerMove(e: FederatedPointerEvent) {
-    if (this.instructions) {
-      this.instructions.push([this.draw(e)]);
-    }
-  }
-
-  onPointerUp(e: FederatedPointerEvent) {
-    this.instructions = undefined;
-  }
-
-  onPointerLeave(e: FederatedPointerEvent) {
-    this.instructions = undefined;
-  }
+  abstract onPointerDown(e: FederatedPointerEvent): Array<unknown>;
+  abstract onPointerMove(e: FederatedPointerEvent): void;
+  abstract onPointerUp(e: FederatedPointerEvent): void;
+  abstract onPointerLeave(e: FederatedPointerEvent): void;
 }

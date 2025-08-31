@@ -18,7 +18,12 @@ export const Brush = memo(({ index }: BrushProps) => {
   const draw = useCallback(
     (g: Graphics) => {
       g.clear();
-      g.path(path).fill({ color: 0xc3b1e1 });
+      g.path(path).stroke({
+        width: 20,
+        color: 0xc3b1e1,
+        cap: "round",
+        join: "round",
+      });
     },
     [path]
   );

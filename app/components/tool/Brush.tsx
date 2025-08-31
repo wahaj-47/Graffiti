@@ -19,7 +19,7 @@ export const Brush = memo(({ index }: BrushProps) => {
     (g: Graphics) => {
       g.clear();
       g.path(path).stroke({
-        width: 20,
+        width: 5,
         color: 0xc3b1e1,
         cap: "round",
         join: "round",

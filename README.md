@@ -1,6 +1,6 @@
-# Welcome to React Router!
+# Graffiti
 
-A modern, production-ready template for building full-stack React applications using React Router.
+A collaborative drawing app built using React, Pixi JS, Yjs, Express and Node JS.
 
 ## Features
 

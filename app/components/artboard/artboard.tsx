@@ -4,7 +4,7 @@ import { Application, extend } from "@pixi/react";
 import { Container, FederatedPointerEvent, Graphics, Rectangle } from "pixi.js";
 import { canUseDOM } from "~/client/utils";
 import { PaintBrush } from "~/graffiti/PaintBrush";
-import { type Tool } from "~/types";
+import { type Tool, type ToolConfig } from "~/types";
 import { useYArray, useYDoc } from "~/context/YContext";
 import { Brush } from "../tool/Brush";
 
@@ -16,14 +16,14 @@ extend({ Container, Graphics });
 
 export function Artboard() {
   const doc = useYDoc();
-  const history = useYArray<string>("history");
+  const history = useYArray<ToolConfig>("history");
   const instructions = useYArray<Array<unknown>>("instructions", "none");
 
-  const tool = useRef<Tool>(new PaintBrush({ radius: 10, color: 0xc3b1e1 }));
+  const tool = useRef<Tool>(new PaintBrush({ radius: 1, color: "red" }));
 
   const onPointerDown = (event: FederatedPointerEvent) => {
     doc.transact(() => {
-      history.push([tool.current.id]);
+      history.push([tool.current.getConfig()]);
       instructions.push([tool.current.onPointerDown(event)]);
     });
   };

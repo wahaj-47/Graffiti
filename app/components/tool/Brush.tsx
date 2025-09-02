@@ -1,13 +1,17 @@
 import { extend } from "@pixi/react";
 import { Graphics, GraphicsPath, type PathInstruction } from "pixi.js";
 import { memo, useCallback, useMemo } from "react";
-import type { Array } from "yjs";
+import { Array } from "yjs";
 import { useObserve, useYArray } from "~/context/YContext";
-import type { BrushProps } from "~/types";
+import type { BrushConfig } from "~/graffiti/Brush";
+import type { BrushProps, ToolConfig } from "~/types";
 
 extend({ Graphics });
 
 export const Brush = memo(({ index }: BrushProps) => {
+  const config = useYArray<Array<ToolConfig>>("history", "none").get(
+    index
+  ) as unknown as BrushConfig;
   const instructions = useYArray<Array<unknown>>("instructions", "none").get(
     index
   );
@@ -19,8 +23,8 @@ export const Brush = memo(({ index }: BrushProps) => {
     (g: Graphics) => {
       g.clear();
       g.path(path).stroke({
-        width: 5,
-        color: 0xc3b1e1,
+        width: config.radius,
+        color: config.color,
         cap: "round",
         join: "round",
       });

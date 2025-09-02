@@ -3,15 +3,24 @@ import { Brush, type BrushConfig } from "./Brush";
 import { Array } from "yjs";
 
 export class PaintBrush extends Brush {
-  constructor(config: BrushConfig) {
+  constructor(config: Omit<BrushConfig, "id">) {
     super(config);
     this.id = "paint-brush";
+  }
+
+  getConfig(): BrushConfig {
+    return {
+      id: this.id,
+      color: this.color,
+      radius: this.radius,
+    };
   }
 
   onPointerDown(e: FederatedPointerEvent): Array<unknown> {
     this.instructions = new Array();
     const { x, y } = e.global;
     const instructions: PathInstruction[] = [
+      { action: "circle", data: [x, y, this.radius / 64] },
       {
         action: "moveTo",
         data: [x, y],

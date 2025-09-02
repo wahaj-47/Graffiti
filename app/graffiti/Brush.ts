@@ -1,11 +1,11 @@
 import type { FederatedPointerEvent, PathInstruction } from "pixi.js";
-import { Array, Map } from "yjs";
-import { type Tool } from "~/types";
+import { Array } from "yjs";
+import { type Tool, type ToolConfig } from "~/types";
 
-export type BrushConfig = {
+export interface BrushConfig extends ToolConfig {
   color: string | number;
   radius: number;
-};
+}
 
 export abstract class Brush implements Tool {
   protected instructions: Array<unknown> | undefined;
@@ -14,7 +14,7 @@ export abstract class Brush implements Tool {
   public color;
   public radius;
 
-  constructor({ color, radius }: BrushConfig) {
+  constructor({ color, radius }: Omit<BrushConfig, "id">) {
     this.instructions = new Array();
 
     this.id = "brush";
@@ -22,6 +22,7 @@ export abstract class Brush implements Tool {
     this.radius = radius;
   }
 
+  abstract getConfig(): BrushConfig;
   abstract onPointerDown(e: FederatedPointerEvent): Array<unknown>;
   abstract onPointerMove(e: FederatedPointerEvent): void;
   abstract onPointerUp(e: FederatedPointerEvent): void;

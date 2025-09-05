@@ -8,13 +8,14 @@ import {
   useState,
   type PropsWithChildren,
 } from "react";
-import { Array, type AbstractType, type Doc, type Map } from "yjs";
+import { Array, UndoManager, type AbstractType, type Doc, type Map } from "yjs";
 
 type ObserverKind = "deep" | "shallow" | "none";
 
 type YContextType = {
   doc: Doc;
   provider: HocuspocusProvider;
+  undoManager: UndoManager;
 };
 
 type YProviderType = {
@@ -39,9 +40,14 @@ export function YProvider({ name, path, children }: YProviderProps) {
       name,
     });
 
+    const undoManager: UndoManager = new UndoManager(provider.document, {
+      captureTimeout: 100,
+    });
+
     setContext({
       provider: provider,
       doc: provider.document,
+      undoManager: undoManager,
     });
 
     return () => {
@@ -68,6 +74,14 @@ export function useYDoc(): Doc {
     throw new Error("Y hooks must be used within a HocuspocusProvider");
   }
   return context.doc;
+}
+
+export function useUndoManger(): UndoManager {
+  const context = useContext(YContext);
+  if (!context) {
+    throw new Error("Y hooks must be used within a HocuspocusProvider");
+  }
+  return context.undoManager;
 }
 
 export function useYArray<T>(

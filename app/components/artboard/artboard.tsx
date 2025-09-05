@@ -1,12 +1,13 @@
 import { useEffect, useRef } from "react";
-import { Array, Map } from "yjs";
+import { Array } from "yjs";
 import { Application, extend } from "@pixi/react";
 import { Container, FederatedPointerEvent, Graphics, Rectangle } from "pixi.js";
 import { canUseDOM } from "~/client/utils";
 import { PaintBrush } from "~/graffiti/PaintBrush";
 import { type Tool, type ToolConfig } from "~/types";
-import { useYArray, useYDoc } from "~/context/YContext";
+import { useUndoManger, useYArray, useYDoc } from "~/context/YContext";
 import { Brush } from "../tool/Brush";
+import { useKeyPress } from "~/hooks/useKeys";
 
 const WIDTH = 1280;
 const HEIGHT = 720;
@@ -18,6 +19,10 @@ export function Artboard() {
   const doc = useYDoc();
   const history = useYArray<ToolConfig>("history");
   const instructions = useYArray<Array<unknown>>("instructions", "none");
+  const undoManager = useUndoManger();
+
+  useKeyPress(["ctrl+z"], (e) => undoManager.undo());
+  useKeyPress(["ctrl+shift+z"], (e) => undoManager.redo());
 
   const tool = useRef<Tool>(new PaintBrush({ radius: 1, color: "red" }));
 

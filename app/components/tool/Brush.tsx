@@ -3,18 +3,14 @@ import { Graphics, GraphicsPath, type PathInstruction } from "pixi.js";
 import { memo, useCallback, useMemo } from "react";
 import { Array } from "yjs";
 import { useObserve, useYArray } from "~/context/YContext";
-import type { BrushConfig } from "~/graffiti/Brush";
+import type { BrushConfig } from "~/engine/Brush";
 import type { BrushProps, ToolConfig } from "~/types";
 
 extend({ Graphics });
 
 export const Brush = memo(({ index }: BrushProps) => {
-  const config = useYArray<Array<ToolConfig>>("history", "none").get(
-    index
-  ) as unknown as BrushConfig;
-  const instructions = useYArray<Array<unknown>>("instructions", "none").get(
-    index
-  );
+  const config = useYArray<ToolConfig>("history", "none").get(index) as BrushConfig;
+  const instructions = useYArray<Array<unknown>>("instructions", "none").get(index);
   useObserve(instructions, "deep");
 
   const path = new GraphicsPath(instructions?.toArray() as PathInstruction[]);
@@ -29,7 +25,7 @@ export const Brush = memo(({ index }: BrushProps) => {
         join: "round",
       });
     },
-    [path]
+    [path],
   );
 
   return <pixiGraphics draw={draw}></pixiGraphics>;

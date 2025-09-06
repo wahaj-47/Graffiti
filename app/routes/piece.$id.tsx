@@ -1,5 +1,5 @@
 import type { Route } from "./+types/piece.$id";
-import { Artboard } from "~/components/artboard/artboard";
+import { Artboard } from "~/components/artboard/Artboard";
 import { YProvider } from "~/context/YContext";
 
 export function meta({}: Route.MetaArgs) {

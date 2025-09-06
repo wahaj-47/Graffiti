@@ -1,7 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { Array } from "yjs";
 import { Application, extend } from "@pixi/react";
-import { Container, FederatedPointerEvent, Graphics, Rectangle } from "pixi.js";
+import { Container, FederatedPointerEvent, Rectangle } from "pixi.js";
 import { canUseDOM } from "~/client/utils";
 import { PaintBrush } from "~/graffiti/PaintBrush";
 import { type Tool, type ToolConfig } from "~/types";
@@ -13,7 +13,7 @@ const WIDTH = 1280;
 const HEIGHT = 720;
 const HIT = new Rectangle(0, 0, WIDTH, HEIGHT);
 
-extend({ Container, Graphics });
+extend({ Container });
 
 export function Artboard() {
   const doc = useYDoc();

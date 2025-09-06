@@ -1,5 +1,5 @@
 import type { Route } from "./+types/piece.$id";
-import { Artboard } from "~/components/artboard/Artboard";
+import { Canvas } from "~/components/viewport/Canvas";
 import { YProvider } from "~/context/YContext";
 
 export function meta({}: Route.MetaArgs) {
@@ -12,7 +12,7 @@ export default function Piece({ params }: Route.ComponentProps) {
   return (
     <YProvider path="/join" name={`${id}`}>
       <div className="flex h-screen items-center justify-center">
-        <Artboard></Artboard>
+        <Canvas></Canvas>
       </div>
     </YProvider>
   );

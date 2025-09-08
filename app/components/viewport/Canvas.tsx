@@ -13,9 +13,15 @@ export function Canvas() {
 
   const tool = useRef<Tool>(new PaintBrush(doc, { radius: 1, color: "red" }));
   const onPointerDown = (event: FederatedPointerEvent) => tool.current.onPointerDown(event);
-  const onPointerMove = (event: FederatedPointerEvent) => tool.current.onPointerMove(event);
   const onPointerUp = (event: FederatedPointerEvent) => tool.current.onPointerUp(event);
+  const onPointerUpOutside = (event: FederatedPointerEvent) => tool.current.onPointerUpOutside(event);
+  const onPointerMove = (event: FederatedPointerEvent) => tool.current.onPointerMove(event);
+  const onPointerOver = (event: FederatedPointerEvent) => tool.current.onPointerOver(event);
+  const onPointerOut = (event: FederatedPointerEvent) => tool.current.onPointerOut(event);
+  const onPointerEnter = (event: FederatedPointerEvent) => tool.current.onPointerEnter(event);
   const onPointerLeave = (event: FederatedPointerEvent) => tool.current.onPointerLeave(event);
+  const onPointerCancel = (event: FederatedPointerEvent) => tool.current.onPointerCancel(event);
+  const onPointerTap = (event: FederatedPointerEvent) => tool.current.onPointerTap(event);
 
   const undoManager = useUndoManger();
   useKeyPress(["ctrl+z"], (e) => undoManager.undo());
@@ -24,7 +30,20 @@ export function Canvas() {
   return (
     <Application width={window.innerWidth} height={window.innerHeight} resizeTo={window}>
       <Viewport>
-        <Artboard></Artboard>
+        <Artboard
+          width={1280}
+          height={720}
+          onPointerDown={onPointerDown}
+          onPointerUp={onPointerUp}
+          onPointerUpOutside={onPointerUpOutside}
+          onPointerMove={onPointerMove}
+          onPointerOver={onPointerOver}
+          onPointerOut={onPointerOut}
+          onPointerEnter={onPointerEnter}
+          onPointerLeave={onPointerLeave}
+          onPointerCancel={onPointerCancel}
+          onPointerTap={onPointerTap}
+        ></Artboard>
       </Viewport>
     </Application>
   );

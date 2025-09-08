@@ -3,13 +3,18 @@ import { Array, type Doc } from "yjs";
 import type { ToolConfig } from "~/types";
 
 export abstract class Tool {
-  id: string = "tool";
+  id: string;
   doc: Doc;
   instructions: Array<unknown>;
+  active: boolean;
+  canActivate: boolean;
 
   constructor(doc: Doc) {
+    this.id = "tool";
     this.doc = doc;
     this.instructions = new Array();
+    this.active = false;
+    this.canActivate = false;
   }
 
   getId(): string {
@@ -20,15 +25,32 @@ export abstract class Tool {
     return { id: this.id };
   }
 
-  onPointerDown(e: FederatedPointerEvent): void {
-    const history = this.doc.getArray("history");
-    const instructions = this.doc.getArray("instructions");
-    this.doc.transact(() => [
-      history.push([this.getConfig(), instructions.push([this.instructions])]),
-    ]);
+  protected setActive(active: boolean) {
+    this.active = active;
   }
 
-  abstract onPointerMove(e: FederatedPointerEvent): void;
-  abstract onPointerUp(e: FederatedPointerEvent): void;
-  abstract onPointerLeave(e: FederatedPointerEvent): void;
+  protected setCanActivate(canActivate: boolean) {
+    this.canActivate = canActivate;
+  }
+
+  protected createTransaction(): void {
+    const history = this.doc.getArray("history");
+    const instructions = this.doc.getArray("instructions");
+    this.doc.transact(() => [history.push([this.getConfig()]), instructions.push([this.instructions])]);
+  }
+
+  protected reset(): void {
+    this.instructions = new Array();
+  }
+
+  onPointerDown(e: FederatedPointerEvent): void {}
+  onPointerUp(e: FederatedPointerEvent): void {}
+  onPointerUpOutside(e: FederatedPointerEvent): void {}
+  onPointerMove(e: FederatedPointerEvent): void {}
+  onPointerOver(e: FederatedPointerEvent): void {}
+  onPointerOut(e: FederatedPointerEvent): void {}
+  onPointerEnter(e: FederatedPointerEvent): void {}
+  onPointerLeave(e: FederatedPointerEvent): void {}
+  onPointerCancel(e: FederatedPointerEvent): void {}
+  onPointerTap(e: FederatedPointerEvent): void {}
 }

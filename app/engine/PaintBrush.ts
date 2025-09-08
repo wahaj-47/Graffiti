@@ -6,30 +6,26 @@ export class PaintBrush extends Brush {
   id = "paint-brush";
 
   onPointerDown(e: FederatedPointerEvent): void {
-    super.onPointerDown(e);
-
     const { x, y } = e.global;
     const instructions: PathInstruction[] = [
-      { action: "circle", data: [x, y, this.radius / 64] },
       {
         action: "moveTo",
         data: [x, y],
       },
+      { action: "circle", data: [x, y, this.radius / 64] },
     ];
     this.instructions.push(instructions);
   }
 
   onPointerMove(e: FederatedPointerEvent): void {
-    if (this.instructions) {
-      const { x, y } = e.global;
-      const instructions: PathInstruction[] = [
-        {
-          action: "lineTo",
-          data: [x, y],
-        },
-      ];
-      this.instructions.push(instructions);
-    }
+    const { x, y } = e.global;
+    const instructions: PathInstruction[] = [
+      {
+        action: "lineTo",
+        data: [x, y],
+      },
+    ];
+    this.instructions.push(instructions);
   }
 
   onPointerUp(e: FederatedPointerEvent): void {

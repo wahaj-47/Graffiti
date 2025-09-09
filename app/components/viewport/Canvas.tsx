@@ -11,7 +11,7 @@ import { Artboard } from "../artboard/Artboard";
 export function Canvas() {
   const doc = useYDoc();
 
-  const tool = useRef<Tool>(new PaintBrush(doc, { radius: 1, color: "red" }));
+  const tool = useRef<Tool>(new PaintBrush(doc, { radius: 10, color: "red" }));
   const onPointerDown = (event: FederatedPointerEvent) => tool.current.onPointerDown(event);
   const onPointerUp = (event: FederatedPointerEvent) => tool.current.onPointerUp(event);
   const onPointerUpOutside = (event: FederatedPointerEvent) => tool.current.onPointerUpOutside(event);
@@ -31,8 +31,8 @@ export function Canvas() {
     <Application width={window.innerWidth} height={window.innerHeight} resizeTo={window}>
       <Viewport>
         <Artboard
-          width={1280}
-          height={720}
+          width={1920}
+          height={1080}
           onPointerDown={onPointerDown}
           onPointerUp={onPointerUp}
           onPointerUpOutside={onPointerUpOutside}

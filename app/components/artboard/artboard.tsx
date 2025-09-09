@@ -4,6 +4,7 @@ import { canUseDOM } from "~/client/utils";
 import { type ToolConfig } from "~/types";
 import { useYArray } from "~/context/YContext";
 import { Brush } from "../tool/Brush";
+import { useMemo } from "react";
 
 extend({ Container });
 
@@ -37,6 +38,10 @@ export function Artboard({
   onPointerTap,
 }: ArtboardProps) {
   const history = useYArray<ToolConfig>("history");
+  const hitArea = useMemo(
+    () => new Rectangle((window.innerWidth - width) / 2, (window.innerHeight - height) / 2, width, height),
+    [width, height],
+  );
 
   if (!canUseDOM) return;
 
@@ -45,6 +50,7 @@ export function Artboard({
       width={width}
       height={height}
       eventMode="dynamic"
+      hitArea={hitArea}
       onPointerDown={onPointerDown}
       onPointerUp={onPointerUp}
       onPointerUpOutside={onPointerUpOutside}
@@ -56,11 +62,6 @@ export function Artboard({
       onPointerCancel={onPointerCancel}
       onPointerTap={onPointerTap}
     >
-      <pixiGraphics
-        draw={(g) => {
-          g.rect(0, 0, width, height).fill(0xf1f1f1);
-        }}
-      ></pixiGraphics>
       {history.toArray().map((command, index) => {
         // @TODO: Switch component based on command
         return <Brush key={index} index={index}></Brush>;

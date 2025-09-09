@@ -1,5 +1,4 @@
-import type { FederatedPointerEvent, PathInstruction } from "pixi.js";
-import { Array, Doc } from "yjs";
+import { Doc } from "yjs";
 import { Tool } from "./Tool";
 import type { ToolConfig } from "~/types";
 

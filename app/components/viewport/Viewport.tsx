@@ -1,14 +1,16 @@
 import { extend, useApplication } from "@pixi/react";
-import * as PixiViewport from "pixi-viewport";
 import type { PropsWithChildren } from "react";
+import { canUseDOM } from "~/client/utils";
+import { Viewport, type IViewportOptions } from "~/engine/core/Viewport";
 
-const { Viewport } = PixiViewport;
 extend({ Viewport });
 
-type GraffitiViewportProps = Omit<PixiViewport.IViewportOptions, "events">;
+export type ViewportComponentProps = PropsWithChildren<Omit<IViewportOptions, "events">>;
 
-export function GraffitiViewport({ children }: PropsWithChildren<GraffitiViewportProps>) {
+export function ViewportComponent({ children }: ViewportComponentProps) {
   const { app } = useApplication();
+
+  if (!app.renderer) return;
 
   return <pixiViewport events={app.renderer.events}>{children}</pixiViewport>;
 }

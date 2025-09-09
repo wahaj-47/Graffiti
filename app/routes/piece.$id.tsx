@@ -1,5 +1,5 @@
 import type { Route } from "./+types/piece.$id";
-import { Canvas } from "~/components/viewport/Canvas";
+import { Canvas } from "~/components/canvas/Canvas";
 import { YProvider } from "~/context/YContext";
 
 export function meta({}: Route.MetaArgs) {

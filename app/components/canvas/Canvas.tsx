@@ -2,11 +2,11 @@ import { Application } from "@pixi/react";
 import type { FederatedPointerEvent } from "pixi.js";
 import { useRef } from "react";
 import { useUndoManger, useYDoc } from "~/context/YContext";
-import { PaintBrush } from "~/engine/PaintBrush";
-import type { Tool } from "~/engine/Tool";
+import { PaintBrush } from "~/engine/tools/PaintBrush";
+import type { Tool } from "~/engine/tools/Tool";
 import { useKeyPress } from "~/hooks/useKeys";
-import { GraffitiViewport as Viewport } from "./Viewport";
-import { Artboard } from "../artboard/Artboard";
+import { ViewportComponent as Viewport } from "../viewport/Viewport";
+import { ArtboardComponent as Artboard } from "../artboard/Artboard";
 
 export function Canvas() {
   const doc = useYDoc();
@@ -31,8 +31,8 @@ export function Canvas() {
     <Application width={window.innerWidth} height={window.innerHeight} resizeTo={window}>
       <Viewport>
         <Artboard
-          width={1920}
-          height={1080}
+          width={1280}
+          height={720}
           onPointerDown={onPointerDown}
           onPointerUp={onPointerUp}
           onPointerUpOutside={onPointerUpOutside}

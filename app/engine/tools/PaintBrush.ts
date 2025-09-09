@@ -1,6 +1,5 @@
 import { type FederatedPointerEvent, type PathInstruction } from "pixi.js";
-import { Brush, type BrushConfig } from "./Brush";
-import { Array, Doc } from "yjs";
+import { Brush } from "./Brush";
 
 export class PaintBrush extends Brush {
   id = "paint-brush";

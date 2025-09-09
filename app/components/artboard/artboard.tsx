@@ -1,14 +1,14 @@
-import { extend } from "@pixi/react";
-import { Container, FederatedPointerEvent, Rectangle } from "pixi.js";
-import { canUseDOM } from "~/client/utils";
-import { type ToolConfig } from "~/types";
-import { useYArray } from "~/context/YContext";
-import { Brush } from "../tool/Brush";
 import { useMemo } from "react";
+import { FederatedPointerEvent, Rectangle } from "pixi.js";
+import { extend } from "@pixi/react";
+import { type ToolConfig } from "~/types";
+import { Brush } from "../tool/Brush";
+import { useYArray } from "~/context/YContext";
+import { Artboard } from "~/engine/core/Artboard";
 
-extend({ Container });
+extend({ Artboard });
 
-type ArtboardProps = {
+type ArtboardComponentProps = {
   width: number;
   height: number;
   onPointerDown?: (e: FederatedPointerEvent) => void;
@@ -23,7 +23,7 @@ type ArtboardProps = {
   onPointerTap?: (e: FederatedPointerEvent) => void;
 };
 
-export function Artboard({
+export function ArtboardComponent({
   width,
   height,
   onPointerDown,
@@ -36,21 +36,13 @@ export function Artboard({
   onPointerLeave,
   onPointerCancel,
   onPointerTap,
-}: ArtboardProps) {
+}: ArtboardComponentProps) {
   const history = useYArray<ToolConfig>("history");
-  const hitArea = useMemo(
-    () => new Rectangle((window.innerWidth - width) / 2, (window.innerHeight - height) / 2, width, height),
-    [width, height],
-  );
-
-  if (!canUseDOM) return;
 
   return (
-    <pixiContainer
+    <pixiArtboard
       width={width}
       height={height}
-      eventMode="dynamic"
-      hitArea={hitArea}
       onPointerDown={onPointerDown}
       onPointerUp={onPointerUp}
       onPointerUpOutside={onPointerUpOutside}
@@ -66,6 +58,6 @@ export function Artboard({
         // @TODO: Switch component based on command
         return <Brush key={index} index={index}></Brush>;
       })}
-    </pixiContainer>
+    </pixiArtboard>
   );
 }

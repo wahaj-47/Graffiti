@@ -5,7 +5,7 @@ export function meta({}: Route.MetaArgs) {
   return [{ title: "Graffiti" }, { name: "description", content: "Welcome to Graffiti!" }];
 }
 
-export async function clientAction({ request, context }: ActionFunctionArgs) {
+export async function action({ request, context }: ActionFunctionArgs) {
   const formData = await request.formData();
   const title = formData.get("title") as string;
 

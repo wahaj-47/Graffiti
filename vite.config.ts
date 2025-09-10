@@ -13,4 +13,7 @@ export default defineConfig(({ isSsrBuild }) => ({
   },
   plugins: [tailwindcss(), tsconfigPaths(), reactRouter()],
   server: { allowedHosts: ["graffiti-tezy.onrender.com"] },
+  ssr: {
+    noExternal: ["pixi-viewport"],
+  },
 }));

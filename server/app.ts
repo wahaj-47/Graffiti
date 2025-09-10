@@ -27,6 +27,11 @@ const hocuspocus = new Hocuspocus({
   extensions: [
     new Database({
       fetch: async ({ documentName }) => {
+        if (client.readyState !== 1) {
+          console.log("Database not connected");
+          return null;
+        }
+
         return DatabaseContext.run(client, async () => {
           const doc = await piece.read(documentName);
           if (!doc) return null;
@@ -45,14 +50,10 @@ const hocuspocus = new Hocuspocus({
     }),
   ],
   onConfigure: async () => {
-    console.log(
-      `Server configured - Connections: ${hocuspocus.getConnectionsCount()}`
-    );
+    console.log(`Server configured - Connections: ${hocuspocus.getConnectionsCount()}`);
   },
   connected: async () => {
-    console.log(
-      `Connection established - Connections: ${hocuspocus.getConnectionsCount()}`
-    );
+    console.log(`Connection established - Connections: ${hocuspocus.getConnectionsCount()}`);
   },
 });
 
@@ -68,7 +69,7 @@ app.use(
         piece,
       };
     },
-  })
+  }),
 );
 
 export { app };

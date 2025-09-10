@@ -2,13 +2,10 @@ import type { Route } from "./+types/_index";
 import { Form, redirect, type ActionFunctionArgs } from "react-router";
 
 export function meta({}: Route.MetaArgs) {
-  return [
-    { title: "Graffiti" },
-    { name: "description", content: "Welcome to Graffiti!" },
-  ];
+  return [{ title: "Graffiti" }, { name: "description", content: "Welcome to Graffiti!" }];
 }
 
-export async function action({ request, context }: ActionFunctionArgs) {
+export async function clientAction({ request, context }: ActionFunctionArgs) {
   const formData = await request.formData();
   const title = formData.get("title") as string;
 

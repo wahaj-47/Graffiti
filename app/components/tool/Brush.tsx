@@ -3,7 +3,7 @@ import { Graphics, GraphicsPath, type PathInstruction } from "pixi.js";
 import { memo, useCallback, useMemo } from "react";
 import { Array } from "yjs";
 import { useObserve, useYArray } from "~/context/YContext";
-import type { BrushConfig } from "~/engine/Brush";
+import type { BrushConfig } from "~/engine/tools/Brush";
 import type { BrushProps, ToolConfig } from "~/types";
 
 extend({ Graphics });

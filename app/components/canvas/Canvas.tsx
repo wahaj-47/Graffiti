@@ -5,8 +5,8 @@ import { useUndoManger, useYDoc } from "~/context/YContext";
 import { PaintBrush } from "~/engine/tools/PaintBrush";
 import type { Tool } from "~/engine/tools/Tool";
 import { useKeyPress } from "~/hooks/useKeys";
-import { ViewportComponent as Viewport } from "../viewport/Viewport";
-import { ArtboardComponent as Artboard } from "../artboard/Artboard";
+import { ViewportComponent as Viewport } from "~/components/viewport/Viewport";
+import { ArtboardComponent as Artboard } from "~/components/artboard/Artboard";
 
 export function Canvas() {
   const doc = useYDoc();

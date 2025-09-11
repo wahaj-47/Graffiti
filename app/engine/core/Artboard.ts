@@ -9,8 +9,6 @@ export class Artboard extends Container {
   constructor(options: ArtboardOptions) {
     super(options);
 
-    console.log("Artboard options:", options);
-
     const { width, height } = options;
     this.eventMode = "dynamic";
     const background = new Graphics().rect(0, 0, width, height).fill(0xffffff);

@@ -13,7 +13,9 @@ export class PaintBrush extends Brush {
         data: [x, y],
       },
     ];
-    this.instructions.push(instructions);
+    this.doc.transact(() => {
+      this.instructions.push(instructions);
+    }, this.doc.clientID);
   }
 
   onPointerDown(e: FederatedPointerEvent): void {
@@ -31,7 +33,10 @@ export class PaintBrush extends Brush {
         data: [x, y],
       },
     ];
-    this.instructions.push(instructions);
+    console.log(this.doc.clientID);
+    this.doc.transact(() => {
+      this.instructions.push(instructions);
+    }, this.doc.clientID);
   }
 
   onPointerUp(e: FederatedPointerEvent): void {
@@ -64,7 +69,9 @@ export class PaintBrush extends Brush {
         data: [x, y, this.radius / 64],
       },
     ];
-    this.instructions.push(instructions);
+    this.doc.transact(() => {
+      this.instructions.push(instructions);
+    }, this.doc.clientID);
     this.endTransaction();
   }
 }

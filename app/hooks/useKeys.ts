@@ -2,11 +2,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
 
 type Key = KeyboardEvent["key"];
 
-export function useKeyPress(
-  combinations: Key[],
-  callback: (event: KeyboardEvent) => void,
-  node?: HTMLElement
-) {
+export function useKeyPress(combinations: Key[], callback: (event: KeyboardEvent) => void, node?: HTMLElement) {
   // Keep the callback updated
   const callbackRef = useRef(callback);
   useLayoutEffect(() => {
@@ -27,7 +23,7 @@ export function useKeyPress(
         callbackRef.current(event);
       }
     },
-    [combinations]
+    [combinations],
   );
 
   useEffect(() => {

@@ -30,7 +30,10 @@ export abstract class Tool {
   protected beginTransaction(e: FederatedPointerEvent): void {
     const history = this.doc.getArray("history");
     const instructions = this.doc.getArray("instructions");
-    this.doc.transact(() => [history.push([this.getConfig()]), instructions.push([this.instructions])]);
+    this.doc.transact(
+      () => [history.push([this.getConfig()]), instructions.push([this.instructions])],
+      this.doc.clientID,
+    );
   }
 
   protected endTransaction(): void {

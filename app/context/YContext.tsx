@@ -1,13 +1,5 @@
 import { HocuspocusProvider } from "@hocuspocus/provider";
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  type PropsWithChildren,
-} from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, type PropsWithChildren } from "react";
 import { Array, UndoManager, type AbstractType, type Doc, type Map } from "yjs";
 
 type ObserverKind = "deep" | "shallow" | "none";
@@ -40,8 +32,11 @@ export function YProvider({ name, path, children }: YProviderProps) {
       name,
     });
 
+    console.log(provider.document.clientID);
+
     const undoManager: UndoManager = new UndoManager(provider.document, {
       captureTimeout: 100,
+      trackedOrigins: new Set([provider.document.clientID]),
     });
 
     setContext({
@@ -84,10 +79,7 @@ export function useUndoManger(): UndoManager {
   return context.undoManager;
 }
 
-export function useYArray<T>(
-  name: string,
-  kind: ObserverKind = "deep"
-): Array<T> {
+export function useYArray<T>(name: string, kind: ObserverKind = "deep"): Array<T> {
   const doc = useYDoc();
   const array = useMemo(() => doc.getArray<T>(name), [doc, name]);
   useObserve(array, kind);
@@ -101,10 +93,7 @@ export function useYMap<T>(name: string, kind: ObserverKind = "deep"): Map<T> {
   return map;
 }
 
-export function useObserve(
-  object: AbstractType<any>,
-  kind: ObserverKind = "deep"
-) {
+export function useObserve(object: AbstractType<any>, kind: ObserverKind = "deep") {
   const redraw = useRedraw();
 
   useEffect(() => {

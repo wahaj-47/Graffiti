@@ -33,7 +33,6 @@ export class PaintBrush extends Brush {
         data: [x, y],
       },
     ];
-    console.log(this.doc.clientID);
     this.doc.transact(() => {
       this.instructions.push(instructions);
     }, this.doc.clientID);

@@ -32,8 +32,6 @@ export function YProvider({ name, path, children }: YProviderProps) {
       name,
     });
 
-    console.log(provider.document.clientID);
-
     const undoManager: UndoManager = new UndoManager(provider.document, {
       captureTimeout: 100,
       trackedOrigins: new Set([provider.document.clientID]),

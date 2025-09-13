@@ -11,7 +11,7 @@ export class Viewport extends BaseViewport {
   constructor(options: IViewportOptions) {
     const { drag, pinch, wheel, decelerate, ...rest } = options;
     super(rest);
-    if (drag) this.drag();
+    if (drag) this.drag({ mouseButtons: "left", keyToPress: ["Space"] });
     if (pinch) this.pinch();
     if (wheel) this.wheel();
     if (decelerate) this.decelerate();

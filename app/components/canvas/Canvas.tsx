@@ -29,7 +29,7 @@ export function Canvas() {
 
   return (
     <Application width={window.innerWidth} height={window.innerHeight} resizeTo={window}>
-      <Viewport>
+      <Viewport drag pinch wheel decelerate>
         <Artboard
           width={1280}
           height={720}

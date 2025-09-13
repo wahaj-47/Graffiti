@@ -6,13 +6,15 @@ export class PaintBrush extends Brush {
 
   protected beginTransaction(e: FederatedPointerEvent): void {
     super.beginTransaction(e);
-    const { x, y } = e.global;
+
+    const { x, y } = this.getLocalPosition(e);
     const instructions: PathInstruction[] = [
       {
         action: "moveTo",
         data: [x, y],
       },
     ];
+
     this.doc.transact(() => {
       this.instructions.push(instructions);
     }, this.doc.clientID);
@@ -26,13 +28,14 @@ export class PaintBrush extends Brush {
   onPointerMove(e: FederatedPointerEvent): void {
     if (!this.isPointerDown || !this.isPointerOver) return;
 
-    const { x, y } = e.global;
+    const { x, y } = this.getLocalPosition(e);
     const instructions: PathInstruction[] = [
       {
         action: "lineTo",
         data: [x, y],
       },
     ];
+
     this.doc.transact(() => {
       this.instructions.push(instructions);
     }, this.doc.clientID);
@@ -60,14 +63,16 @@ export class PaintBrush extends Brush {
 
   onPointerTap(e: FederatedPointerEvent): void {
     super.onPointerTap(e);
-    this.beginTransaction(e);
-    const { x, y } = e.global;
+    super.beginTransaction(e);
+
+    const { x, y } = this.getLocalPosition(e);
     const instructions: PathInstruction[] = [
       {
         action: "circle",
         data: [x, y, this.radius / 64],
       },
     ];
+
     this.doc.transact(() => {
       this.instructions.push(instructions);
     }, this.doc.clientID);

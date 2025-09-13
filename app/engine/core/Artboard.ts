@@ -12,9 +12,6 @@ export class Artboard extends Container {
     const { width, height } = options;
     this.eventMode = "dynamic";
     const background = new Graphics().rect(0, 0, width, height).fill(0xffffff);
-    const mask = new Graphics().rect(0, 0, width, height).fill(0x000000);
     this.addChild(background);
-    this.addChild(mask);
-    this.mask = mask;
   }
 }

@@ -40,6 +40,10 @@ export abstract class Tool {
     this.instructions = new Array();
   }
 
+  protected getLocalPosition(e: FederatedPointerEvent) {
+    return e.getLocalPosition(e.target, e.global);
+  }
+
   onPointerDown(e: FederatedPointerEvent): void {
     this.isPointerDown = true;
   }

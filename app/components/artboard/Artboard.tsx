@@ -1,12 +1,12 @@
 import { useMemo } from "react";
-import { FederatedPointerEvent, Rectangle } from "pixi.js";
+import { FederatedPointerEvent, Rectangle, RenderTexture } from "pixi.js";
 import { extend } from "@pixi/react";
 import { type ToolConfig } from "~/types";
 import { Brush } from "~/components/tool/Brush";
 import { useYArray } from "~/context/YContext";
 import { Artboard } from "~/engine/core/Artboard";
 
-extend({ Artboard });
+extend({ Artboard, RenderTexture });
 
 type ArtboardComponentProps = {
   width: number;

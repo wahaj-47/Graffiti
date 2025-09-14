@@ -28,7 +28,7 @@ export function Canvas() {
   useKeyPress(["ctrl+shift+z"], (e) => undoManager.redo());
 
   return (
-    <Application width={window.innerWidth} height={window.innerHeight} resizeTo={window}>
+    <Application width={window.innerWidth} height={window.innerHeight} resizeTo={window} background={"blue"}>
       <Viewport drag pinch wheel decelerate>
         <Artboard
           width={1280}

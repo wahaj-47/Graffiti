@@ -2,6 +2,6 @@ export interface ToolConfig {
   id: string;
 }
 
-export type BrushProps = {
+export type ToolProps = {
   index: number;
 };

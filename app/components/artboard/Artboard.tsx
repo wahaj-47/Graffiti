@@ -1,16 +1,15 @@
-import { useMemo } from "react";
 import { FederatedPointerEvent, Rectangle, RenderTexture } from "pixi.js";
-import { extend } from "@pixi/react";
+import { extend, useApplication } from "@pixi/react";
 import { type ToolConfig } from "~/types";
 import { Brush } from "~/components/tool/Brush";
 import { useYArray } from "~/context/YContext";
 import { Artboard } from "~/engine/core/Artboard";
+import { useMemo } from "react";
+import { Eraser } from "../tool/Eraser";
 
 extend({ Artboard, RenderTexture });
 
 type ArtboardComponentProps = {
-  width: number;
-  height: number;
   onPointerDown?: (e: FederatedPointerEvent) => void;
   onPointerUp?: (e: FederatedPointerEvent) => void;
   onPointerUpOutside?: (e: FederatedPointerEvent) => void;
@@ -24,8 +23,6 @@ type ArtboardComponentProps = {
 };
 
 export function ArtboardComponent({
-  width,
-  height,
   onPointerDown,
   onPointerUp,
   onPointerUpOutside,
@@ -38,11 +35,12 @@ export function ArtboardComponent({
   onPointerTap,
 }: ArtboardComponentProps) {
   const history = useYArray<ToolConfig>("history");
+  const { app } = useApplication();
+  const hitArea = useMemo(() => app.screen, []);
 
   return (
     <pixiArtboard
-      width={width}
-      height={height}
+      hitArea={hitArea}
       onPointerDown={onPointerDown}
       onPointerUp={onPointerUp}
       onPointerUpOutside={onPointerUpOutside}
@@ -55,8 +53,14 @@ export function ArtboardComponent({
       onPointerTap={onPointerTap}
     >
       {history.toArray().map((command, index) => {
-        // @TODO: Switch component based on command
-        return <Brush key={index} index={index}></Brush>;
+        switch (command.id) {
+          case "paint-brush":
+            return <Brush key={index} index={index}></Brush>;
+          case "eraser":
+            return <Eraser key={index} index={index}></Eraser>;
+          default:
+            return;
+        }
       })}
     </pixiArtboard>
   );

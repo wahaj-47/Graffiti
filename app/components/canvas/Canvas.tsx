@@ -7,6 +7,7 @@ import type { Tool } from "~/engine/tools/Tool";
 import { useKeyPress } from "~/hooks/useKeys";
 import { ViewportComponent as Viewport } from "~/components/viewport/Viewport";
 import { ArtboardComponent as Artboard } from "~/components/artboard/Artboard";
+import { Eraser } from "~/engine/tools/Eraser";
 
 export function Canvas() {
   const doc = useYDoc();
@@ -27,12 +28,17 @@ export function Canvas() {
   useKeyPress(["ctrl+z"], (e) => undoManager.undo());
   useKeyPress(["ctrl+shift+z"], (e) => undoManager.redo());
 
+  useKeyPress(["e"], (e) => {
+    tool.current = new Eraser(doc, { radius: 10 });
+  });
+  useKeyPress(["b"], (e) => {
+    tool.current = new PaintBrush(doc, { radius: 10, color: "red" });
+  });
+
   return (
-    <Application width={window.innerWidth} height={window.innerHeight} resizeTo={window} background={"blue"}>
+    <Application width={window.innerWidth} height={window.innerHeight} resizeTo={window}>
       <Viewport drag pinch wheel decelerate>
         <Artboard
-          width={1280}
-          height={720}
           onPointerDown={onPointerDown}
           onPointerUp={onPointerUp}
           onPointerUpOutside={onPointerUpOutside}

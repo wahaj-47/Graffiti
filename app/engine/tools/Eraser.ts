@@ -1,12 +1,26 @@
-import { type FederatedPointerEvent, type PathInstruction } from "pixi.js";
-import { Brush, type BrushConfig } from "./Brush";
-import type { Doc } from "yjs";
+import { Doc } from "yjs";
 import { Tool } from "./Tool";
+import type { ToolConfig } from "~/types";
+import type { FederatedPointerEvent, PathInstruction } from "pixi.js";
 
-export class PaintBrush extends Brush {
-  constructor(doc: Doc, config: Omit<BrushConfig, "id">) {
-    super(doc, config);
-    this.id = "paint-brush";
+export interface EraserConfig extends ToolConfig {
+  radius: number;
+}
+
+export class Eraser extends Tool {
+  radius: number;
+
+  constructor(doc: Doc, config: Omit<EraserConfig, "id">) {
+    super(doc);
+    this.id = "eraser";
+    this.radius = config.radius;
+  }
+
+  getConfig(): EraserConfig {
+    return {
+      id: this.id,
+      radius: this.radius,
+    };
   }
 
   protected beginTransaction(e: FederatedPointerEvent): void {
@@ -29,6 +43,7 @@ export class PaintBrush extends Brush {
   }
 
   onPointerMove(e: FederatedPointerEvent): void {
+    console.log(Tool.isPointerOver);
     if (!Tool.isPointerDown || !Tool.isPointerOver) return;
 
     const { x, y } = this.getLocalPosition(e);

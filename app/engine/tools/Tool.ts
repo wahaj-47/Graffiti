@@ -7,16 +7,13 @@ export abstract class Tool {
   doc: Doc;
   instructions: Array<unknown>;
 
-  protected isPointerOver: boolean;
-  protected isPointerDown: boolean;
+  static isPointerOver: boolean;
+  static isPointerDown: boolean;
 
   constructor(doc: Doc) {
     this.id = "tool";
     this.doc = doc;
     this.instructions = new Array();
-
-    this.isPointerOver = false;
-    this.isPointerDown = false;
   }
 
   getId(): string {
@@ -36,6 +33,12 @@ export abstract class Tool {
     );
   }
 
+  protected transact(instructions: unknown[]): void {
+    this.doc.transact(() => {
+      this.instructions.push(instructions);
+    }, this.doc.clientID);
+  }
+
   protected endTransaction(): void {
     this.instructions = new Array();
   }
@@ -45,20 +48,20 @@ export abstract class Tool {
   }
 
   onPointerDown(e: FederatedPointerEvent): void {
-    this.isPointerDown = true;
+    Tool.isPointerDown = true;
   }
   onPointerUp(e: FederatedPointerEvent): void {
-    this.isPointerDown = false;
+    Tool.isPointerDown = false;
   }
   onPointerUpOutside(e: FederatedPointerEvent): void {
-    this.isPointerDown = false;
+    Tool.isPointerDown = false;
   }
   onPointerMove(e: FederatedPointerEvent): void {}
   onPointerOver(e: FederatedPointerEvent): void {
-    this.isPointerOver = true;
+    Tool.isPointerOver = true;
   }
   onPointerOut(e: FederatedPointerEvent): void {
-    this.isPointerOver = false;
+    Tool.isPointerOver = false;
   }
   onPointerEnter(e: FederatedPointerEvent): void {}
   onPointerLeave(e: FederatedPointerEvent): void {}

@@ -3,13 +3,13 @@ import { Graphics, GraphicsPath, type PathInstruction } from "pixi.js";
 import { memo, useCallback } from "react";
 import { Array } from "yjs";
 import { useObserve, useYArray } from "~/context/YContext";
-import type { BrushConfig } from "~/engine/tools/Brush";
+import type { EraserConfig } from "~/engine/tools/Eraser";
 import type { ToolProps, ToolConfig } from "~/types";
 
 extend({ Graphics });
 
-export const Brush = memo(({ index }: ToolProps) => {
-  const config = useYArray<ToolConfig>("history", "none").get(index) as BrushConfig;
+export const Eraser = memo(({ index }: ToolProps) => {
+  const config = useYArray<ToolConfig>("history", "none").get(index) as EraserConfig;
   const instructions = useYArray<Array<unknown>>("instructions", "none").get(index);
   useObserve(instructions, "deep");
 
@@ -20,10 +20,10 @@ export const Brush = memo(({ index }: ToolProps) => {
       g.clear();
       g.path(path).stroke({
         width: config.radius,
-        color: config.color,
         cap: "round",
         join: "round",
       });
+      g.blendMode = "erase";
     },
     [path],
   );

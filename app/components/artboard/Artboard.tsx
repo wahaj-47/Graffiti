@@ -1,13 +1,18 @@
 import { FederatedPointerEvent, Rectangle, RenderTexture } from "pixi.js";
 import { extend, useApplication } from "@pixi/react";
 import { type ToolConfig } from "~/types";
-import { Brush } from "~/components/tool/Brush";
 import { useYArray } from "~/context/YContext";
 import { Artboard } from "~/engine/core/Artboard";
 import { useMemo } from "react";
+import { PaintBrush } from "~/components/tool/PaintBrush";
 import { Eraser } from "../tool/Eraser";
 
 extend({ Artboard, RenderTexture });
+
+const registry = {
+  "paint-brush": PaintBrush,
+  "eraser-tool": Eraser,
+};
 
 type ArtboardComponentProps = {
   onPointerDown?: (e: FederatedPointerEvent) => void;
@@ -53,14 +58,9 @@ export function ArtboardComponent({
       onPointerTap={onPointerTap}
     >
       {history.toArray().map((command, index) => {
-        switch (command.id) {
-          case "paint-brush":
-            return <Brush key={index} index={index}></Brush>;
-          case "eraser":
-            return <Eraser key={index} index={index}></Eraser>;
-          default:
-            return;
-        }
+        const Command = registry[command.id as keyof typeof registry];
+        if (!Command) return null;
+        return <Command key={index} index={index}></Command>;
       })}
     </pixiArtboard>
   );

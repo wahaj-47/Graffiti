@@ -12,7 +12,7 @@ export class Eraser extends Tool {
 
   constructor(doc: Doc, config: Omit<EraserConfig, "id">) {
     super(doc);
-    this.id = "eraser";
+    this.id = "eraser-tool";
     this.radius = config.radius;
   }
 

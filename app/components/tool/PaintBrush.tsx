@@ -8,7 +8,7 @@ import type { ToolProps, ToolConfig } from "~/types";
 
 extend({ Graphics });
 
-export const Brush = memo(({ index }: ToolProps) => {
+export const PaintBrush = memo(({ index }: ToolProps) => {
   const config = useYArray<ToolConfig>("history", "none").get(index) as BrushConfig;
   const instructions = useYArray<Array<unknown>>("instructions", "none").get(index);
   useObserve(instructions, "deep");

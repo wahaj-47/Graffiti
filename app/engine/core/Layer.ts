@@ -1,12 +1,11 @@
 import { Container, Graphics, Rectangle, Ticker, type ContainerOptions } from "pixi.js";
 
-interface ArtboardOptions extends ContainerOptions {}
+interface LayerOptions extends ContainerOptions {}
 
-export class Artboard extends Container {
-  constructor(options: ArtboardOptions) {
+export class Layer extends Container {
+  constructor(options: LayerOptions) {
     super(options);
 
-    this.eventMode = "static";
     this.cacheAsTexture(true);
 
     const ticker = new Ticker();

@@ -1,13 +1,16 @@
-import { FederatedPointerEvent, Rectangle, RenderTexture } from "pixi.js";
-import { extend, useApplication } from "@pixi/react";
+import { Container, type EventMode, FederatedPointerEvent, Graphics, RenderTexture } from "pixi.js";
+import { extend } from "@pixi/react";
 import { type ToolConfig } from "~/types";
 import { useYArray } from "~/context/YContext";
-import { Artboard } from "~/engine/core/Artboard";
-import { useMemo } from "react";
+import { Layer } from "~/engine/core/Layer";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { PaintBrush } from "~/components/tool/PaintBrush";
 import { Eraser } from "../tool/Eraser";
+import { useKeyPress } from "~/hooks/useKeys";
 
-extend({ Artboard, RenderTexture });
+const BLEED = 5;
+
+extend({ Container, Layer, RenderTexture });
 
 const registry = {
   "paint-brush": PaintBrush,
@@ -15,6 +18,8 @@ const registry = {
 };
 
 type ArtboardComponentProps = {
+  width: number;
+  height: number;
   onPointerDown?: (e: FederatedPointerEvent) => void;
   onPointerUp?: (e: FederatedPointerEvent) => void;
   onPointerUpOutside?: (e: FederatedPointerEvent) => void;
@@ -28,6 +33,8 @@ type ArtboardComponentProps = {
 };
 
 export function ArtboardComponent({
+  width,
+  height,
   onPointerDown,
   onPointerUp,
   onPointerUpOutside,
@@ -39,13 +46,31 @@ export function ArtboardComponent({
   onPointerCancel,
   onPointerTap,
 }: ArtboardComponentProps) {
+  const [eventMode, setEventMode] = useState<EventMode>("static");
   const history = useYArray<ToolConfig>("history");
-  const { app } = useApplication();
-  const hitArea = useMemo(() => app.screen, []);
+  const mask = useRef<Graphics>(null);
+
+  const drawMask = useCallback((g: Graphics) => {
+    g.rect(0, 0, width, height);
+    g.fill();
+  }, []);
+
+  const drawBackground = useCallback((g: Graphics) => {
+    g.setFillStyle({ color: "white" });
+    g.rect(0, 0, width + BLEED, height + BLEED);
+    g.fill();
+  }, []);
+
+  useKeyPress(
+    [" "],
+    (e) => setEventMode("none"),
+    (e) => setEventMode("static"),
+  );
 
   return (
-    <pixiArtboard
-      hitArea={hitArea}
+    <pixiContainer
+      eventMode={eventMode}
+      mask={mask.current}
       onPointerDown={onPointerDown}
       onPointerUp={onPointerUp}
       onPointerUpOutside={onPointerUpOutside}
@@ -57,11 +82,15 @@ export function ArtboardComponent({
       onPointerCancel={onPointerCancel}
       onPointerTap={onPointerTap}
     >
-      {history.toArray().map((command, index) => {
-        const Command = registry[command.id as keyof typeof registry];
-        if (!Command) return null;
-        return <Command key={index} index={index}></Command>;
-      })}
-    </pixiArtboard>
+      <pixiGraphics ref={mask} draw={drawMask}></pixiGraphics>
+      <pixiGraphics draw={drawBackground}></pixiGraphics>
+      <pixiLayer>
+        {history.toArray().map((command, index) => {
+          const Command = registry[command.id as keyof typeof registry];
+          if (!Command) return null;
+          return <Command key={index} index={index}></Command>;
+        })}
+      </pixiLayer>
+    </pixiContainer>
   );
 }

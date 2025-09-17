@@ -28,6 +28,7 @@ export function Canvas() {
   useKeyPress(["ctrl+z"], (e) => undoManager.undo());
   useKeyPress(["ctrl+shift+z"], (e) => undoManager.redo());
 
+  // @TODO: Move these shortcut bindings to a toolbar component
   useKeyPress(["e"], (e) => {
     tool.current = new Eraser(doc, { radius: 10 });
   });
@@ -39,6 +40,8 @@ export function Canvas() {
     <Application width={window.innerWidth} height={window.innerHeight} resizeTo={window}>
       <Viewport drag pinch wheel decelerate>
         <Artboard
+          width={1280}
+          height={720}
           onPointerDown={onPointerDown}
           onPointerUp={onPointerUp}
           onPointerUpOutside={onPointerUpOutside}

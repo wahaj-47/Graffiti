@@ -39,7 +39,6 @@ export function useKeyPress(
 
   const handleKeyUp = useCallback(
     (event: KeyboardEvent) => {
-      console.log(event.key);
       const released = [];
       if (event.ctrlKey) released.push("ctrl");
       if (event.shiftKey) released.push("shift");

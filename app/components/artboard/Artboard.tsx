@@ -3,12 +3,12 @@ import { extend } from "@pixi/react";
 import { type ToolConfig } from "~/types";
 import { useYArray } from "~/context/YContext";
 import { Layer } from "~/engine/core/Layer";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { PaintBrush } from "~/components/tool/PaintBrush";
 import { Eraser } from "../tool/Eraser";
 import { useKeyPress } from "~/hooks/useKeys";
 
-const BLEED = 5;
+const BLEED = 100;
 
 extend({ Container, Layer, RenderTexture });
 
@@ -57,7 +57,7 @@ export function ArtboardComponent({
 
   const drawBackground = useCallback((g: Graphics) => {
     g.setFillStyle({ color: "white" });
-    g.rect(0, 0, width + BLEED, height + BLEED);
+    g.rect(0, 0, width, height);
     g.fill();
   }, []);
 

@@ -1,6 +1,6 @@
 import { Application } from "@pixi/react";
-import type { FederatedPointerEvent } from "pixi.js";
-import { useRef } from "react";
+import { type IHitArea, type FederatedPointerEvent } from "pixi.js";
+import { useRef, useState } from "react";
 import { useUndoManger, useYDoc } from "~/context/YContext";
 import { PaintBrush } from "~/engine/tools/PaintBrush";
 import type { Tool } from "~/engine/tools/Tool";
@@ -8,9 +8,12 @@ import { useKeyPress } from "~/hooks/useKeys";
 import { ViewportComponent as Viewport } from "~/components/viewport/Viewport";
 import { ArtboardComponent as Artboard } from "~/components/artboard/Artboard";
 import { Eraser } from "~/engine/tools/Eraser";
+import type { Viewport as PixiViewport } from "~/engine/core/Viewport";
 
 export function Canvas() {
   const doc = useYDoc();
+
+  const [hitArea, setHitArea] = useState<IHitArea | null | undefined>();
 
   const tool = useRef<Tool>(new PaintBrush(doc, { radius: 10, color: "red" }));
   const onPointerDown = (event: FederatedPointerEvent) => tool.current.onPointerDown(event);
@@ -23,6 +26,10 @@ export function Canvas() {
   const onPointerLeave = (event: FederatedPointerEvent) => tool.current.onPointerLeave(event);
   const onPointerCancel = (event: FederatedPointerEvent) => tool.current.onPointerCancel(event);
   const onPointerTap = (event: FederatedPointerEvent) => tool.current.onPointerTap(event);
+
+  const onMovedEnd = (viewport: PixiViewport) => {
+    setHitArea(viewport.hitArea);
+  };
 
   const undoManager = useUndoManger();
   useKeyPress(["ctrl+z"], (e) => undoManager.undo());
@@ -38,10 +45,9 @@ export function Canvas() {
 
   return (
     <Application width={window.innerWidth} height={window.innerHeight} resizeTo={window}>
-      <Viewport drag pinch wheel decelerate>
+      <Viewport drag pinch wheel decelerate onMovedEnd={onMovedEnd}>
         <Artboard
-          width={1280}
-          height={720}
+          hitArea={hitArea}
           onPointerDown={onPointerDown}
           onPointerUp={onPointerUp}
           onPointerUpOutside={onPointerUpOutside}

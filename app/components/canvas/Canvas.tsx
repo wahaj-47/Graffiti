@@ -1,6 +1,6 @@
 import { Application } from "@pixi/react";
-import { type IHitArea, type FederatedPointerEvent } from "pixi.js";
-import { useRef, useState } from "react";
+import { Container, type ContainerChild, type FederatedPointerEvent } from "pixi.js";
+import { useRef } from "react";
 import { useUndoManger, useYDoc } from "~/context/YContext";
 import { PaintBrush } from "~/engine/tools/PaintBrush";
 import type { Tool } from "~/engine/tools/Tool";
@@ -12,8 +12,7 @@ import type { Viewport as PixiViewport } from "~/engine/core/Viewport";
 
 export function Canvas() {
   const doc = useYDoc();
-
-  const [hitArea, setHitArea] = useState<IHitArea | null | undefined>();
+  const artboardRef = useRef<Container<ContainerChild>>(null);
 
   const tool = useRef<Tool>(new PaintBrush(doc, { radius: 10, color: "red" }));
   const onPointerDown = (event: FederatedPointerEvent) => tool.current.onPointerDown(event);
@@ -28,7 +27,8 @@ export function Canvas() {
   const onPointerTap = (event: FederatedPointerEvent) => tool.current.onPointerTap(event);
 
   const onMovedEnd = (viewport: PixiViewport) => {
-    setHitArea(viewport.hitArea);
+    if (!artboardRef.current) return;
+    artboardRef.current.hitArea = viewport.hitArea;
   };
 
   const undoManager = useUndoManger();
@@ -47,7 +47,7 @@ export function Canvas() {
     <Application width={window.innerWidth} height={window.innerHeight} resizeTo={window}>
       <Viewport drag pinch wheel decelerate onMovedEnd={onMovedEnd}>
         <Artboard
-          hitArea={hitArea}
+          ref={artboardRef}
           onPointerDown={onPointerDown}
           onPointerUp={onPointerUp}
           onPointerUpOutside={onPointerUpOutside}

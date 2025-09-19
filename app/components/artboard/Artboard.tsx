@@ -1,5 +1,13 @@
-import { Container, type EventMode, FederatedPointerEvent, Graphics, type IHitArea, RenderTexture } from "pixi.js";
-import { extend } from "@pixi/react";
+import {
+  Container,
+  type ContainerOptions,
+  type EventMode,
+  FederatedPointerEvent,
+  Graphics,
+  type IHitArea,
+  RenderTexture,
+} from "pixi.js";
+import { extend, type PixiReactElementProps } from "@pixi/react";
 import { type ToolConfig } from "~/types";
 import { useYArray } from "~/context/YContext";
 import { Layer } from "~/engine/core/Layer";
@@ -15,33 +23,7 @@ const registry = {
   "eraser-tool": Eraser,
 };
 
-type ArtboardComponentProps = {
-  hitArea?: IHitArea | null;
-  onPointerDown?: (e: FederatedPointerEvent) => void;
-  onPointerUp?: (e: FederatedPointerEvent) => void;
-  onPointerUpOutside?: (e: FederatedPointerEvent) => void;
-  onPointerMove?: (e: FederatedPointerEvent) => void;
-  onPointerOver?: (e: FederatedPointerEvent) => void;
-  onPointerOut?: (e: FederatedPointerEvent) => void;
-  onPointerEnter?: (e: FederatedPointerEvent) => void;
-  onPointerLeave?: (e: FederatedPointerEvent) => void;
-  onPointerCancel?: (e: FederatedPointerEvent) => void;
-  onPointerTap?: (e: FederatedPointerEvent) => void;
-};
-
-export function ArtboardComponent({
-  hitArea,
-  onPointerDown,
-  onPointerUp,
-  onPointerUpOutside,
-  onPointerMove,
-  onPointerOver,
-  onPointerOut,
-  onPointerEnter,
-  onPointerLeave,
-  onPointerCancel,
-  onPointerTap,
-}: ArtboardComponentProps) {
+export function ArtboardComponent(props: PixiReactElementProps<typeof Container>) {
   const [eventMode, setEventMode] = useState<EventMode>("static");
   const history = useYArray<ToolConfig>("history");
 
@@ -52,20 +34,7 @@ export function ArtboardComponent({
   );
 
   return (
-    <pixiContainer
-      hitArea={hitArea}
-      eventMode={eventMode}
-      onPointerDown={onPointerDown}
-      onPointerUp={onPointerUp}
-      onPointerUpOutside={onPointerUpOutside}
-      onPointerMove={onPointerMove}
-      onPointerOver={onPointerOver}
-      onPointerOut={onPointerOut}
-      onPointerEnter={onPointerEnter}
-      onPointerLeave={onPointerLeave}
-      onPointerCancel={onPointerCancel}
-      onPointerTap={onPointerTap}
-    >
+    <pixiContainer eventMode={eventMode} {...props}>
       <pixiLayer>
         {history.toArray().map((command, index) => {
           const Command = registry[command.id as keyof typeof registry];

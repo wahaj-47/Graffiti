@@ -6,7 +6,7 @@ export class Layer extends Container {
   constructor(options: LayerOptions) {
     super(options);
 
-    this.cacheAsTexture(true);
+    this.cacheAsTexture({ antialias: true });
 
     const ticker = new Ticker();
     ticker.add(this.update, this);

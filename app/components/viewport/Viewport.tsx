@@ -1,5 +1,5 @@
 import { extend, useApplication } from "@pixi/react";
-import { useCallback, useEffect, useRef, type PropsWithChildren } from "react";
+import { type PropsWithChildren } from "react";
 import { Viewport, type IViewportOptions } from "~/engine/core/Viewport";
 
 extend({ Viewport });

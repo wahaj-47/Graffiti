@@ -70,8 +70,6 @@ export class Viewport extends BaseViewport {
 
     super(rest);
 
-    this.clampZoom({ minScale: 0.1 });
-
     if (drag) this.drag({ mouseButtons: "left", keyToPress: ["Space"] });
     if (pinch) this.pinch();
     if (wheel) this.wheel();

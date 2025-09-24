@@ -1,5 +1,5 @@
 import { Application } from "@pixi/react";
-import { Container, type ContainerChild, type FederatedPointerEvent } from "pixi.js";
+import { Container, Rectangle, type ContainerChild, type FederatedPointerEvent } from "pixi.js";
 import { useEffect, useRef, type Ref } from "react";
 import { useUndoManger, useYDoc } from "~/context/YContext";
 import { PaintBrush } from "~/engine/tools/PaintBrush";

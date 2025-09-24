@@ -28,5 +28,5 @@ export const Eraser = memo(({ index }: ToolProps) => {
     [path],
   );
 
-  return <pixiGraphics draw={draw}></pixiGraphics>;
+  return <pixiGraphics draw={draw} cullable></pixiGraphics>;
 });

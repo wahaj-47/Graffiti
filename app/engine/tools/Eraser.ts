@@ -8,19 +8,10 @@ export interface EraserConfig extends ToolConfig {
 }
 
 export class Eraser extends Tool {
-  radius: number;
-
   constructor(doc: Doc, config: Omit<EraserConfig, "id">) {
     super(doc);
-    this.id = "eraser-tool";
-    this.radius = config.radius;
-  }
-
-  getConfig(): EraserConfig {
-    return {
-      id: this.id,
-      radius: this.radius,
-    };
+    this.config.set("id", "eraser-tool");
+    this.config.set("radius", config.radius);
   }
 
   protected beginTransaction(e: FederatedPointerEvent): void {
@@ -43,7 +34,6 @@ export class Eraser extends Tool {
   }
 
   onPointerMove(e: FederatedPointerEvent): void {
-    console.log(Tool.isPointerOver);
     if (!Tool.isPointerDown || !Tool.isPointerOver) return;
 
     const { x, y } = this.getLocalPosition(e);
@@ -84,8 +74,12 @@ export class Eraser extends Tool {
     const { x, y } = this.getLocalPosition(e);
     const instructions: PathInstruction[] = [
       {
-        action: "circle",
-        data: [x, y, this.radius / 64],
+        action: "moveTo",
+        data: [x - 1, y - 1],
+      },
+      {
+        action: "lineTo",
+        data: [x + 1, y + 1],
       },
     ];
 

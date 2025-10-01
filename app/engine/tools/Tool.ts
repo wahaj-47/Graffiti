@@ -1,36 +1,32 @@
 import type { FederatedPointerEvent } from "pixi.js";
-import { Array, type Doc } from "yjs";
+import { Array, Map, type Doc } from "yjs";
 import type { ToolConfig } from "~/types";
 
 export abstract class Tool {
-  id: string;
   doc: Doc;
+  config: Map<unknown>;
   instructions: Array<unknown>;
 
   static isPointerOver: boolean;
   static isPointerDown: boolean;
 
   constructor(doc: Doc) {
-    this.id = "tool";
     this.doc = doc;
+    this.config = new Map();
     this.instructions = new Array();
+
+    this.config.set("id", "tool");
   }
 
   getId(): string {
-    return this.id;
-  }
-
-  getConfig(): ToolConfig {
-    return { id: this.id };
+    return this.config.get("id") as string;
   }
 
   protected beginTransaction(e: FederatedPointerEvent): void {
+    console.log("Begin transaction");
     const history = this.doc.getArray("history");
     const instructions = this.doc.getArray("instructions");
-    this.doc.transact(
-      () => [history.push([this.getConfig()]), instructions.push([this.instructions])],
-      this.doc.clientID,
-    );
+    this.doc.transact(() => [history.push([this.config]), instructions.push([this.instructions])], this.doc.clientID);
   }
 
   protected transact(instructions: unknown[]): void {
@@ -40,6 +36,9 @@ export abstract class Tool {
   }
 
   protected endTransaction(): void {
+    this.config.set("dirty", false);
+
+    this.config = this.config.clone();
     this.instructions = new Array();
   }
 

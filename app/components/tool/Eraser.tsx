@@ -1,7 +1,7 @@
 import { extend } from "@pixi/react";
 import { Graphics, GraphicsPath, type PathInstruction } from "pixi.js";
 import { memo, useCallback } from "react";
-import { Array } from "yjs";
+import { Array, Map } from "yjs";
 import { useObserve, useYArray } from "~/context/YContext";
 import type { EraserConfig } from "~/engine/tools/Eraser";
 import type { ToolProps, ToolConfig } from "~/types";
@@ -9,7 +9,9 @@ import type { ToolProps, ToolConfig } from "~/types";
 extend({ Graphics });
 
 export const Eraser = memo(({ index }: ToolProps) => {
-  const config = useYArray<ToolConfig>("history", "none").get(index) as EraserConfig;
+  const config = useYArray<Map<unknown>>("history", "none").get(index);
+  const json = config.toJSON();
+
   const instructions = useYArray<Array<unknown>>("instructions", "none").get(index);
   useObserve(instructions, "deep");
 
@@ -19,7 +21,7 @@ export const Eraser = memo(({ index }: ToolProps) => {
     (g: Graphics) => {
       g.clear();
       g.path(path).stroke({
-        width: config.radius,
+        width: json.radius,
         cap: "round",
         join: "round",
       });

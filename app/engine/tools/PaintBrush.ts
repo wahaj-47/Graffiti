@@ -6,7 +6,7 @@ import { Tool } from "./Tool";
 export class PaintBrush extends Brush {
   constructor(doc: Doc, config: Omit<BrushConfig, "id">) {
     super(doc, config);
-    this.id = "paint-brush";
+    this.config.set("id", "paint-brush");
   }
 
   protected beginTransaction(e: FederatedPointerEvent): void {
@@ -69,8 +69,12 @@ export class PaintBrush extends Brush {
     const { x, y } = this.getLocalPosition(e);
     const instructions: PathInstruction[] = [
       {
-        action: "circle",
-        data: [x, y, this.radius / 64],
+        action: "moveTo",
+        data: [x, y - 0.5],
+      },
+      {
+        action: "lineTo",
+        data: [x, y + 0.5],
       },
     ];
 

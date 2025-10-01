@@ -44,7 +44,7 @@ export function Canvas() {
   });
 
   return (
-    <Application width={window.innerWidth} height={window.innerHeight} resizeTo={window}>
+    <Application width={window.innerWidth} height={window.innerHeight} resizeTo={window} backgroundColor={0x111111}>
       <Viewport drag pinch wheel decelerate onMovedEnd={onMovedEnd}>
         <Artboard
           ref={artboardRef}

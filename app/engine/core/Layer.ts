@@ -1,9 +1,11 @@
 import {
   Bounds,
   Container,
+  extensions,
   Graphics,
   ObservablePoint,
   Point,
+  Sprite,
   ViewContainer,
   type ContainerChild,
   type ContainerOptions,
@@ -48,12 +50,14 @@ export class Layer extends Container {
     this.addChild(bbox);
 
     child.onRender = () => {
-      const { x, y, width, height } = child.getLocalBounds(); // x,y,width,height in world coords
+      const { x, y, width, height } = child.getLocalBounds();
       bbox.clear();
       bbox.rect(x, y, width, height).stroke({ width: 2, color: "white" });
-    };
 
-    //
+      if (!child.dirty) {
+        child.onRender = null;
+      }
+    };
 
     // console.log("Child updated");
 

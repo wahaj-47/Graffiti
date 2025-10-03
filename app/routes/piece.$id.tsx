@@ -11,7 +11,7 @@ export default function Piece({ params }: Route.ComponentProps) {
 
   return (
     <YProvider path="/join" name={`${id}`}>
-      <div className="flex h-screen items-center justify-center">
+      <div className="flex h-screen items-center justify-center bg-zinc-900">
         <Canvas></Canvas>
       </div>
     </YProvider>

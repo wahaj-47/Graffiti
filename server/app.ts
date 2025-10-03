@@ -9,6 +9,7 @@ import piece from "database/services/Piece";
 
 import { Hocuspocus } from "@hocuspocus/server";
 import { pieceRouter } from "socket/piece";
+import * as Y from "yjs";
 
 declare module "react-router" {
   interface AppLoadContext {}
@@ -19,7 +20,6 @@ const app = express();
 if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is required");
 
 const client = mongoose.createConnection(process.env.DATABASE_URL);
-client.on("error", () => {});
 client.model("Piece", pieceSchema);
 
 const hocuspocus = new Hocuspocus({

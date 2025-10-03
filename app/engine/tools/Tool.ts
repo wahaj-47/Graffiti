@@ -16,7 +16,6 @@ export abstract class Tool {
     this.instructions = new Array();
 
     this.config.set("id", "tool");
-    this.config.set("dirty", true);
   }
 
   getId(): string {
@@ -24,11 +23,9 @@ export abstract class Tool {
   }
 
   protected beginTransaction(e: FederatedPointerEvent): void {
-    this.config.set("dirty", true);
-
+    console.log("Begin transaction");
     const history = this.doc.getArray("history");
     const instructions = this.doc.getArray("instructions");
-
     this.doc.transact(() => [history.push([this.config]), instructions.push([this.instructions])], this.doc.clientID);
   }
 

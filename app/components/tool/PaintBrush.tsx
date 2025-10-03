@@ -1,6 +1,6 @@
 import { extend } from "@pixi/react";
 import { Graphics, GraphicsPath, type PathInstruction } from "pixi.js";
-import { memo, useCallback, useEffect, useRef } from "react";
+import { memo, useCallback } from "react";
 import { Array, Map } from "yjs";
 import { useObserve, useYArray } from "~/context/YContext";
 import type { BrushConfig } from "~/engine/tools/Brush";
@@ -11,7 +11,6 @@ extend({ Graphics });
 export const PaintBrush = memo(({ index }: ToolProps) => {
   const config = useYArray<Map<unknown>>("history", "none").get(index);
   const json = config.toJSON() as BrushConfig;
-  useObserve(config);
 
   const instructions = useYArray<Array<unknown>>("instructions", "none").get(index);
   useObserve(instructions, "deep");
@@ -27,7 +26,6 @@ export const PaintBrush = memo(({ index }: ToolProps) => {
         cap: "round",
         join: "round",
       });
-      g.dirty = json.dirty;
     },
     [path],
   );

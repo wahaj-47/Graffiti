@@ -12,15 +12,14 @@ import { type ToolConfig } from "~/types";
 import { useYArray } from "~/context/YContext";
 import { Layer } from "~/engine/core/Layer";
 import { useState } from "react";
-import { PaintBrush } from "~/components/tool/PaintBrush";
-import { Eraser } from "../tool/Eraser";
 import { useKeyPress } from "~/hooks/useKeys";
+import { Renderer } from "../tool";
 
 extend({ Container, Layer, RenderTexture });
 
 const registry = {
-  "paint-brush": PaintBrush,
-  "eraser-tool": Eraser,
+  "paint-brush": Renderer.PaintBrush,
+  "eraser-tool": Renderer.Eraser,
 };
 
 export function ArtboardComponent(props: PixiReactElementProps<typeof Container>) {

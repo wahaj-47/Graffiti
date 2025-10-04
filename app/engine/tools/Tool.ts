@@ -2,8 +2,8 @@ import type { FederatedPointerEvent } from "pixi.js";
 import { Array, type Doc } from "yjs";
 import type { ToolConfig } from "~/types";
 
-export abstract class Tool {
-  id: string;
+export abstract class Tool<T extends ToolConfig> {
+  id: T["id"];
   doc: Doc;
   instructions: Array<unknown>;
 
@@ -11,17 +11,17 @@ export abstract class Tool {
   static isPointerDown: boolean;
 
   constructor(doc: Doc) {
-    this.id = "tool";
     this.doc = doc;
+    this.id = "tool";
     this.instructions = new Array();
   }
 
-  getId(): string {
+  getId(): T["id"] {
     return this.id;
   }
 
-  getConfig(): ToolConfig {
-    return { id: this.id };
+  getConfig(): T {
+    return { id: this.id } as T;
   }
 
   protected beginTransaction(e: FederatedPointerEvent): void {

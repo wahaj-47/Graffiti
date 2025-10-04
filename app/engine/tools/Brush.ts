@@ -7,7 +7,7 @@ export interface BrushConfig extends ToolConfig {
   radius: number;
 }
 
-export abstract class Brush extends Tool {
+export abstract class Brush<T extends BrushConfig> extends Tool<T> {
   color: string | number;
   radius: number;
 
@@ -17,11 +17,11 @@ export abstract class Brush extends Tool {
     this.radius = config.radius;
   }
 
-  getConfig(): BrushConfig {
-    return {
-      id: this.id,
-      color: this.color,
-      radius: this.radius,
-    };
+  getConfig(): T {
+    const config = super.getConfig();
+    config.color = this.color;
+    config.radius = this.radius;
+
+    return config;
   }
 }

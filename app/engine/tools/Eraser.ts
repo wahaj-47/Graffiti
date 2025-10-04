@@ -4,10 +4,11 @@ import type { ToolConfig } from "~/types";
 import type { FederatedPointerEvent, PathInstruction } from "pixi.js";
 
 export interface EraserConfig extends ToolConfig {
+  id: "eraser-tool";
   radius: number;
 }
 
-export class Eraser extends Tool {
+export class Eraser extends Tool<EraserConfig> {
   radius: number;
 
   constructor(doc: Doc, config: Omit<EraserConfig, "id">) {

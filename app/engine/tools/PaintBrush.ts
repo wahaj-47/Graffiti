@@ -3,7 +3,11 @@ import { Brush, type BrushConfig } from "./Brush";
 import type { Doc } from "yjs";
 import { Tool } from "./Tool";
 
-export class PaintBrush extends Brush {
+export interface PaintBrushConfig extends BrushConfig {
+  id: "paint-brush";
+}
+
+export class PaintBrush extends Brush<PaintBrushConfig> {
   constructor(doc: Doc, config: Omit<BrushConfig, "id">) {
     super(doc, config);
     this.id = "paint-brush";

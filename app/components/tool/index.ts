@@ -1,7 +1,4 @@
-import { PaintBrushRenderer } from "./PaintBrush";
-import { EraserRenderer } from "./Eraser";
+import { Eraser } from "./Eraser";
+import { PaintBrush } from "./PaintBrush";
 
-export const Renderer = {
-  PaintBrush: PaintBrushRenderer,
-  Eraser: EraserRenderer,
-};
+export { PaintBrush, Eraser };

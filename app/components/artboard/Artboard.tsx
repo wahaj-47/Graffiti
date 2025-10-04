@@ -13,13 +13,13 @@ import { useYArray } from "~/context/YContext";
 import { Layer } from "~/engine/core/Layer";
 import { useState } from "react";
 import { useKeyPress } from "~/hooks/useKeys";
-import { Renderer } from "../tool";
+import { PaintBrush, Eraser } from "../tool";
 
 extend({ Container, Layer, RenderTexture });
 
 const registry = {
-  "paint-brush": Renderer.PaintBrush,
-  "eraser-tool": Renderer.Eraser,
+  "paint-brush": PaintBrush.Renderer,
+  "eraser-tool": Eraser.Renderer,
 };
 
 export function ArtboardComponent(props: PixiReactElementProps<typeof Container>) {

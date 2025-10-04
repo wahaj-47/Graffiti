@@ -8,7 +8,7 @@ export interface ToolConfig {
 export interface ToolDefinition<T extends ToolConfig> {
   id: T["id"];
   defaultConfig: T;
-  icon: ComponentType<LucideProps>;
+  Icon: ComponentType<LucideProps>;
   Renderer: ComponentType<ToolRendererProps>;
   Details: ComponentType;
 }

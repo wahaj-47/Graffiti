@@ -4,11 +4,11 @@ import { memo, useCallback } from "react";
 import { Array } from "yjs";
 import { useObserve, useYArray } from "~/context/YContext";
 import type { EraserConfig } from "~/engine/tools/Eraser";
-import type { ToolProps, ToolConfig } from "~/types";
+import type { ToolRendererProps, ToolConfig } from "~/types";
 
 extend({ Graphics });
 
-export const Eraser = memo(({ index }: ToolProps) => {
+export const EraserRenderer = memo(({ index }: ToolRendererProps) => {
   const config = useYArray<ToolConfig>("history", "none").get(index) as EraserConfig;
   const instructions = useYArray<Array<unknown>>("instructions", "none").get(index);
   useObserve(instructions, "deep");

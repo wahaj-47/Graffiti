@@ -1,5 +1,7 @@
 import type { Route } from "./+types/piece.$id";
 import { Canvas } from "~/components/canvas/Canvas";
+import { Toolbar } from "~/components/toolbar/Toolbar";
+import { ToolProvider } from "~/context/ToolContext";
 import { YProvider } from "~/context/YContext";
 
 export function meta({}: Route.MetaArgs) {
@@ -11,9 +13,12 @@ export default function Piece({ params }: Route.ComponentProps) {
 
   return (
     <YProvider path="/join" name={`${id}`}>
-      <div className="flex h-screen items-center justify-center bg-zinc-900">
-        <Canvas></Canvas>
-      </div>
+      <ToolProvider>
+        <div className="bg-zinc-900">
+          <Toolbar></Toolbar>
+          <Canvas></Canvas>
+        </div>
+      </ToolProvider>
     </YProvider>
   );
 }

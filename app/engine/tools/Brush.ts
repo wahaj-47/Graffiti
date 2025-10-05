@@ -8,20 +8,23 @@ export interface BrushConfig extends ToolConfig {
 }
 
 export abstract class Brush<T extends BrushConfig> extends Tool<T> {
-  color: string | number;
-  radius: number;
-
-  constructor(doc: Doc, config: Omit<BrushConfig, "id">) {
-    super(doc);
-    this.color = config.color;
-    this.radius = config.radius;
+  constructor(doc: Doc, config: Omit<T, "id">) {
+    super(doc, config);
   }
 
-  getConfig(): T {
-    const config = super.getConfig();
-    config.color = this.color;
-    config.radius = this.radius;
+  get color(): T["color"] {
+    return this.config.color;
+  }
 
-    return config;
+  set color(value: T["color"]) {
+    this.config.color = value;
+  }
+
+  get radius(): T["radius"] {
+    return this.config.radius;
+  }
+
+  set radius(value: T["radius"]) {
+    this.config.radius = value;
   }
 }

@@ -7,7 +7,8 @@ export interface ToolConfig {
 
 export interface ToolDefinition<T extends ToolConfig> {
   id: T["id"];
-  defaultConfig: T;
+  defaultConfig: Omit<T, "id">;
+  shortcut: string;
   Icon: ComponentType<LucideProps>;
   Renderer: ComponentType<ToolRendererProps>;
   Details: ComponentType;

@@ -3,25 +3,27 @@ import { Array, type Doc } from "yjs";
 import type { ToolConfig } from "~/types";
 
 export abstract class Tool<T extends ToolConfig> {
-  id: T["id"];
+  abstract readonly id: T["id"];
+  config: T;
   doc: Doc;
   instructions: Array<unknown>;
 
   static isPointerOver: boolean;
   static isPointerDown: boolean;
 
-  constructor(doc: Doc) {
+  constructor(doc: Doc, config: Omit<T, "id">) {
     this.doc = doc;
-    this.id = "tool";
+    this.config = config as T;
     this.instructions = new Array();
   }
 
-  getId(): T["id"] {
-    return this.id;
+  getConfig(): T {
+    this.config.id = this.id;
+    return this.config;
   }
 
-  getConfig(): T {
-    return { id: this.id } as T;
+  setConfig(config: T): void {
+    Object.assign(this.config, config);
   }
 
   protected beginTransaction(e: FederatedPointerEvent): void {

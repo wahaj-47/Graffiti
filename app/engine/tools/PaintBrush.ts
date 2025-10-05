@@ -4,13 +4,14 @@ import type { Doc } from "yjs";
 import { Tool } from "./Tool";
 
 export interface PaintBrushConfig extends BrushConfig {
-  id: "paint-brush";
+  readonly id: "paint-brush";
 }
 
 export class PaintBrush extends Brush<PaintBrushConfig> {
-  constructor(doc: Doc, config: Omit<BrushConfig, "id">) {
+  id: PaintBrushConfig["id"] = "paint-brush";
+
+  constructor(doc: Doc, config: Omit<PaintBrushConfig, "id">) {
     super(doc, config);
-    this.id = "paint-brush";
   }
 
   protected beginTransaction(e: FederatedPointerEvent): void {

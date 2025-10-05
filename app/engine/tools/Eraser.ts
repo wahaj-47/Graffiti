@@ -4,24 +4,23 @@ import type { ToolConfig } from "~/types";
 import type { FederatedPointerEvent, PathInstruction } from "pixi.js";
 
 export interface EraserConfig extends ToolConfig {
-  id: "eraser-tool";
+  readonly id: "eraser-tool";
   radius: number;
 }
 
 export class Eraser extends Tool<EraserConfig> {
-  radius: number;
+  id: EraserConfig["id"] = "eraser-tool";
 
   constructor(doc: Doc, config: Omit<EraserConfig, "id">) {
-    super(doc);
-    this.id = "eraser-tool";
-    this.radius = config.radius;
+    super(doc, config);
   }
 
-  getConfig(): EraserConfig {
-    return {
-      id: this.id,
-      radius: this.radius,
-    };
+  get radius(): EraserConfig["radius"] {
+    return this.config.radius;
+  }
+
+  set radius(value: EraserConfig["radius"]) {
+    this.config.radius = value;
   }
 
   protected beginTransaction(e: FederatedPointerEvent): void {

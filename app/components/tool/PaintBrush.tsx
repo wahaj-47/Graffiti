@@ -38,6 +38,7 @@ const Details = () => {
 
 export const PaintBrush: ToolDefinition<PaintBrushConfig> = {
   id: "paint-brush",
+  name: "Paint Brush",
   defaultConfig: { color: 0x110000, radius: 10 },
   shortcut: "b",
   Icon: PaintbrushIcon,

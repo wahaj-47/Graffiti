@@ -38,6 +38,7 @@ const Details = () => {
 
 export const Eraser: ToolDefinition<EraserConfig> = {
   id: "eraser-tool",
+  name: "Eraser",
   defaultConfig: { radius: 10 },
   shortcut: "e",
   Icon: EraserIcon,

@@ -18,6 +18,11 @@ type ToolButtonProps<T extends ToolConfig> = {
 };
 
 function ToolButton<T extends ToolConfig>({ tool }: ToolButtonProps<T>) {
+  useKeyPress([tool.shortcut], () => {
+    // Set active tool in context
+    // setTool(new tool.Engine(doc, tool.defaultConfig))
+  });
+
   return (
     <Toggle
       value={tool.id}

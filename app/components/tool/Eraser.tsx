@@ -6,6 +6,7 @@ import { Array } from "yjs";
 import { useObserve, useYArray } from "~/context/YContext";
 import type { EraserConfig } from "~/engine/tools/Eraser";
 import type { ToolRendererProps, ToolConfig, ToolDefinition } from "~/types";
+import { Eraser as Engine } from "~/engine/tools/Eraser";
 
 extend({ Graphics });
 
@@ -44,4 +45,5 @@ export const Eraser: ToolDefinition<EraserConfig> = {
   Icon: EraserIcon,
   Renderer: Renderer,
   Details: Details,
+  Engine: Engine,
 };

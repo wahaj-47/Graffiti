@@ -11,7 +11,7 @@ import { useTool } from "~/context/ToolContext";
 export function Canvas() {
   const artboardRef = useRef<Container<ContainerChild>>(null);
 
-  const tool = useTool();
+  const { tool } = useTool();
   const onPointerDown = (event: FederatedPointerEvent) => tool.onPointerDown(event);
   const onPointerUp = (event: FederatedPointerEvent) => tool.onPointerUp(event);
   const onPointerUpOutside = (event: FederatedPointerEvent) => tool.onPointerUpOutside(event);

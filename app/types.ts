@@ -15,7 +15,7 @@ export interface ToolDefinition<T extends ToolConfig> {
   Icon: ComponentType<LucideProps>;
   Renderer: ComponentType<ToolRendererProps>;
   Details: ComponentType<ToolDetailsProps>;
-  Engine: new (doc: Doc, config: T) => Tool<T>;
+  Engine: new (doc: Doc, config: Omit<T, "id">) => Tool<T>;
 }
 
 export type ToolRendererProps = {

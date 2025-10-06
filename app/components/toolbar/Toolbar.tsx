@@ -3,6 +3,8 @@ import type { ToolConfig, ToolDefinition } from "~/types";
 import { PaintBrush } from "../tool/PaintBrush";
 import { Eraser } from "../tool/Eraser";
 import { Toggle } from "../ui/toggle";
+import { useTool } from "~/context/ToolContext";
+import { useYDoc } from "~/context/YContext";
 
 export function Toolbar() {
   return (
@@ -18,13 +20,18 @@ type ToolButtonProps<T extends ToolConfig> = {
 };
 
 function ToolButton<T extends ToolConfig>({ tool }: ToolButtonProps<T>) {
-  useKeyPress([tool.shortcut], () => {
-    // Set active tool in context
-    // setTool(new tool.Engine(doc, tool.defaultConfig))
-  });
+  const doc = useYDoc();
+  const { tool: activeTool, setTool } = useTool();
+
+  const onPressed = () => {
+    setTool(new tool.Engine(doc, tool.defaultConfig));
+  };
+  useKeyPress([tool.shortcut], onPressed);
 
   return (
     <Toggle
+      pressed={tool.id == activeTool.id}
+      onPressedChange={onPressed}
       value={tool.id}
       aria-label={`Toggle ${tool.name} tool`}
       className="m-1 text-muted data-[state=on]:text-primary"

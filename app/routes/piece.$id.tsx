@@ -1,3 +1,4 @@
+import { ToolDetails } from "~/components/tool-details/tool-details";
 import type { Route } from "./+types/piece.$id";
 import { Canvas } from "~/components/canvas/Canvas";
 import { Toolbar } from "~/components/toolbar/Toolbar";
@@ -16,6 +17,7 @@ export default function Piece({ params }: Route.ComponentProps) {
       <ToolProvider>
         <div className="bg-zinc-900">
           <Toolbar></Toolbar>
+          <ToolDetails></ToolDetails>
           <Canvas></Canvas>
         </div>
       </ToolProvider>

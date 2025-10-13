@@ -1,7 +1,6 @@
 import { useKeyPress } from "~/hooks/useKeys";
 import type { ToolConfig, ToolDefinition } from "~/types";
-import { PaintBrush } from "../tool/PaintBrush";
-import { Eraser } from "../tool/Eraser";
+import { PaintBrush, Eraser } from "../tool";
 import { Toggle } from "../ui/toggle";
 import { useTool } from "~/context/ToolContext";
 import { useYDoc } from "~/context/YContext";
@@ -26,6 +25,7 @@ function ToolButton<T extends ToolConfig>({ tool }: ToolButtonProps<T>) {
   const onPressed = () => {
     setTool(new tool.Engine(doc, tool.defaultConfig));
   };
+
   useKeyPress([tool.shortcut], onPressed);
 
   return (

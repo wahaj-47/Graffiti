@@ -14,12 +14,9 @@ export interface ToolDefinition<T extends ToolConfig> {
   shortcut: string;
   Icon: ComponentType<LucideProps>;
   Renderer: ComponentType<ToolRendererProps>;
-  Details: ComponentType<ToolDetailsProps>;
   Engine: new (doc: Doc, config: Omit<T, "id">) => Tool<T>;
 }
 
 export type ToolRendererProps = {
   index: number;
 };
-
-export type ToolDetailsProps = {};

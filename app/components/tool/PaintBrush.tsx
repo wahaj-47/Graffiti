@@ -5,7 +5,7 @@ import { memo, useCallback } from "react";
 import { Array } from "yjs";
 import { useObserve, useYArray } from "~/context/YContext";
 import type { PaintBrushConfig } from "~/engine/tools/PaintBrush";
-import type { ToolRendererProps, ToolConfig, ToolDefinition, ToolDetailsProps } from "~/types";
+import type { ToolRendererProps, ToolConfig, ToolDefinition } from "~/types";
 import { PaintBrush as Engine } from "~/engine/tools/PaintBrush";
 
 extend({ Graphics });
@@ -33,10 +33,6 @@ const Renderer = memo(({ index }: ToolRendererProps) => {
   return <pixiGraphics draw={draw} cullable></pixiGraphics>;
 });
 
-const Details = memo((props: ToolDetailsProps) => {
-  return <div></div>;
-});
-
 export const PaintBrush: ToolDefinition<PaintBrushConfig> = {
   id: "paint-brush",
   name: "Paint Brush",
@@ -44,6 +40,5 @@ export const PaintBrush: ToolDefinition<PaintBrushConfig> = {
   shortcut: "b",
   Icon: PaintbrushIcon,
   Renderer: Renderer,
-  Details: Details,
   Engine: Engine,
 };

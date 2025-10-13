@@ -33,10 +33,6 @@ const Renderer = memo(({ index }: ToolRendererProps) => {
   return <pixiGraphics draw={draw} cullable></pixiGraphics>;
 });
 
-const Details = () => {
-  return <div></div>;
-};
-
 export const Eraser: ToolDefinition<EraserConfig> = {
   id: "eraser-tool",
   name: "Eraser",
@@ -44,6 +40,5 @@ export const Eraser: ToolDefinition<EraserConfig> = {
   shortcut: "e",
   Icon: EraserIcon,
   Renderer: Renderer,
-  Details: Details,
   Engine: Engine,
 };

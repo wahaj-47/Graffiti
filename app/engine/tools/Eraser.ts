@@ -2,6 +2,7 @@ import { Doc } from "yjs";
 import { Tool } from "./Tool";
 import type { ToolConfig } from "~/types";
 import type { FederatedPointerEvent, PathInstruction } from "pixi.js";
+import { GProperty } from "../decorators/GProperty";
 
 export interface EraserConfig extends ToolConfig {
   readonly id: "eraser-tool";
@@ -15,6 +16,7 @@ export class Eraser extends Tool<EraserConfig> {
     super(doc, config);
   }
 
+  @GProperty({ type: "number", label: "Radius" })
   get radius(): EraserConfig["radius"] {
     return this.config.radius;
   }

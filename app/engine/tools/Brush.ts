@@ -1,6 +1,7 @@
 import { Doc } from "yjs";
 import { Tool } from "./Tool";
 import type { ToolConfig } from "~/types";
+import { GProperty } from "../decorators/GProperty";
 
 export interface BrushConfig extends ToolConfig {
   color: string | number;
@@ -12,6 +13,7 @@ export abstract class Brush<T extends BrushConfig> extends Tool<T> {
     super(doc, config);
   }
 
+  @GProperty({ type: "color", label: "Color" })
   get color(): T["color"] {
     return this.config.color;
   }
@@ -20,6 +22,7 @@ export abstract class Brush<T extends BrushConfig> extends Tool<T> {
     this.config.color = value;
   }
 
+  @GProperty({ type: "number", label: "Radius" })
   get radius(): T["radius"] {
     return this.config.radius;
   }

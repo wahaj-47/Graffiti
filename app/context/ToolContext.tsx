@@ -1,7 +1,5 @@
 import { createContext, useContext, useState, type Dispatch, type PropsWithChildren, type SetStateAction } from "react";
-import { PaintBrush } from "~/engine/tools/PaintBrush";
-import type { Tool } from "~/engine/tools/Tool";
-import type { ToolConfig } from "~/types";
+import { PaintBrush, type Tool } from "~/engine/tools/";
 import { useYDoc } from "./YContext";
 
 type ToolContextType = {
@@ -23,7 +21,7 @@ export function ToolProvider({ children }: ToolProviderProps) {
 export const useTool = () => {
   const context = useContext(ToolContext);
   if (!context) {
-    throw new Error("Tool hooks must be used within a HocuspocusProvider");
+    throw new Error("Tool hooks must be used within a ToolProvider");
   }
   return context;
 };

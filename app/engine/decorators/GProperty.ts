@@ -6,13 +6,13 @@ type GPropertySpecifiers = {
 export function GProperty(options: GPropertySpecifiers) {
   return function (target: any, key: string) {
     if (!target.constructor.GProps) {
-      target.constructor.GProps = {};
+      target.constructor.GProps = [];
     }
 
-    target.constructor.GProps[key] = options;
+    target.constructor.GProps.push(options);
   };
 }
 
-export function getGProps<T extends { constructor: any }>(instance: T): Record<string, GPropertySpecifiers> {
+export function getGProps<T extends { constructor: any }>(instance: T): GPropertySpecifiers[] {
   return instance.constructor.GProps ?? null;
 }

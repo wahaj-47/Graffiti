@@ -124,6 +124,12 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-accent;
+  }
+
+  input,
+  textarea,
+  select {
+    @apply text-input py-1.5 px-2 focus:outline-none;
   }
 }

@@ -1,28 +1,22 @@
-import {
-  ColorPicker,
-  ColorPickerAlpha,
-  ColorPickerEyeDropper,
-  ColorPickerFormat,
-  ColorPickerHue,
-  ColorPickerOutput,
-  ColorPickerSelection,
-} from "../ui/shadcn-io/color-picker";
+import { useState } from "react";
+import { HexColorPicker, HexColorInput } from "react-colorful";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { SquareIcon } from "lucide-react";
 
 export function Color() {
+  const [color, setColor] = useState("#ffffff");
+
   return (
-    <ColorPicker className="rounded-md border p-4 h-auto">
-      <ColorPickerSelection className="h-50" />
-      <div className="flex items-center gap-4">
-        <ColorPickerEyeDropper />
-        <div className="grid w-full gap-1">
-          <ColorPickerHue />
-          <ColorPickerAlpha />
-        </div>
+    <Popover>
+      <div className="flex flex-row items-center border rounded-sm pl-1">
+        <PopoverTrigger asChild>
+          <SquareIcon fill={color} stroke="transparent" className="mr-1"></SquareIcon>
+        </PopoverTrigger>
+        <HexColorInput color={color} onChange={setColor} className="uppercase w-[120px]" />
       </div>
-      <div className="flex items-center gap-2">
-        <ColorPickerOutput />
-        <ColorPickerFormat />
-      </div>
-    </ColorPicker>
+      <PopoverContent className="w-fit bg-primary border-0 shadow-lg/30">
+        <HexColorPicker color={color} onChange={setColor} />
+      </PopoverContent>
+    </Popover>
   );
 }

@@ -4,9 +4,9 @@ import type { ToolConfig } from "~/types";
 
 export abstract class Tool<T extends ToolConfig> {
   abstract readonly id: T["id"];
-  config: T;
-  doc: Doc;
-  instructions: Array<unknown>;
+  protected config: T;
+  private doc: Doc;
+  private instructions: Array<unknown>;
 
   static isPointerOver: boolean;
   static isPointerDown: boolean;

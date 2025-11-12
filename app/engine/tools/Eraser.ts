@@ -23,6 +23,7 @@ export class Eraser extends Tool<EraserConfig> {
 
   set radius(value: EraserConfig["radius"]) {
     this.config.radius = value;
+    this.broadcast();
   }
 
   protected beginTransaction(e: FederatedPointerEvent): void {

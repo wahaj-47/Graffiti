@@ -1,6 +1,6 @@
 import { type FederatedPointerEvent, type PathInstruction } from "pixi.js";
 import { Brush, type BrushConfig } from "./Brush";
-import type { Doc } from "yjs";
+import { type Doc } from "yjs";
 import { Tool } from "./Tool";
 
 export interface PaintBrushConfig extends BrushConfig {

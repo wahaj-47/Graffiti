@@ -1,12 +1,13 @@
 import type { FederatedPointerEvent } from "pixi.js";
 import { Array, type Doc } from "yjs";
-import type { ToolConfig } from "~/types";
+import type { Listener, ToolConfig } from "~/types";
 
 export abstract class Tool<T extends ToolConfig> {
   abstract readonly id: T["id"];
   protected config: T;
   private doc: Doc;
   private instructions: Array<unknown>;
+  private listeners: Set<Listener>;
 
   static isPointerOver: boolean;
   static isPointerDown: boolean;
@@ -15,6 +16,16 @@ export abstract class Tool<T extends ToolConfig> {
     this.doc = doc;
     this.config = config as T;
     this.instructions = new Array();
+    this.listeners = new Set();
+  }
+
+  subscribe(fn: Listener): () => boolean {
+    this.listeners.add(fn);
+    return () => this.listeners.delete(fn);
+  }
+
+  protected broadcast(): void {
+    this.listeners.forEach((fn) => fn());
   }
 
   getConfig(): T {

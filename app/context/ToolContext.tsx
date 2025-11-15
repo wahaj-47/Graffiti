@@ -13,7 +13,7 @@ const ToolContext = createContext<ToolContextType | null>(null);
 
 export function ToolProvider({ children }: ToolProviderProps) {
   const doc = useYDoc();
-  const [tool, setTool] = useState<Tool<any>>(new PaintBrush(doc, { color: "red", radius: 10 }));
+  const [tool, setTool] = useState<Tool<any>>(new PaintBrush(doc, { color: "#ffffff", radius: 10 }));
 
   return <ToolContext.Provider value={{ tool, setTool }}>{children}</ToolContext.Provider>;
 }

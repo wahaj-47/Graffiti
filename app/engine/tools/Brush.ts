@@ -20,6 +20,7 @@ export abstract class Brush<T extends BrushConfig> extends Tool<T> {
 
   set color(value: T["color"]) {
     this.config.color = value;
+    this.broadcast();
   }
 
   @GProperty({ type: "number", label: "Radius" })
@@ -29,5 +30,6 @@ export abstract class Brush<T extends BrushConfig> extends Tool<T> {
 
   set radius(value: T["radius"]) {
     this.config.radius = value;
+    this.broadcast();
   }
 }

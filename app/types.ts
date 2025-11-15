@@ -3,6 +3,8 @@ import type { LucideProps } from "lucide-react";
 import type { Tool } from "./engine/tools/Tool";
 import type { Doc } from "yjs";
 
+export type Listener = () => void;
+
 export interface ToolConfig {
   id: string;
 }

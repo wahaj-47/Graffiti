@@ -3,7 +3,7 @@ import { HexColorPicker, HexColorInput } from "react-colorful";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { SquareIcon } from "lucide-react";
 
-export function Color({ value, onChange }) {
+export function Color({ value, onChange }: { value: string; onChange: (value: string) => void }) {
   return (
     <Popover>
       <div className="flex flex-row items-center border rounded-sm pl-1">

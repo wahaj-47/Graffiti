@@ -46,7 +46,6 @@ export class Eraser extends Tool<EraserConfig> {
   }
 
   onPointerMove(e: FederatedPointerEvent): void {
-    console.log(Tool.isPointerOver);
     if (!Tool.isPointerDown || !Tool.isPointerOver) return;
 
     const { x, y } = this.getLocalPosition(e);

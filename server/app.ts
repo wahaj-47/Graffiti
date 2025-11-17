@@ -9,7 +9,6 @@ import piece from "database/services/Piece";
 
 import { Hocuspocus } from "@hocuspocus/server";
 import { pieceRouter } from "socket/piece";
-import * as Y from "yjs";
 
 declare module "react-router" {
   interface AppLoadContext {}

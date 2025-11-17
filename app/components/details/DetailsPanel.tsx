@@ -4,7 +4,9 @@ import { Number } from "../property/Number";
 import { Color } from "../property/Color";
 import { Separator } from "../ui/separator";
 import type { Tool } from "~/engine/tools";
-import { useSyncExternalStore } from "react";
+import { useRef, useSyncExternalStore } from "react";
+import { GripVertical } from "lucide-react";
+import { useDraggable } from "~/hooks/useDraggable";
 
 function Property(props: GPropertySpecifiers<Tool<any>, keyof Tool<any>>) {
   const { tool } = useTool();
@@ -26,10 +28,18 @@ function Property(props: GPropertySpecifiers<Tool<any>, keyof Tool<any>>) {
 export function DetailsPanel() {
   const { tool } = useTool();
   const properties = getGProps(tool);
+  const { transform, setNodeRef, listeners } = useDraggable();
+
+  const style = {
+    transform: `translate(${transform.x}px, ${transform.y}px)`,
+  };
 
   return (
-    <div className="absolute h-screen right-0 space-y-2 bg-zinc-800 p-4">
-      <h4>Properties</h4>
+    <div ref={setNodeRef} className="absolute top-2 right-2 space-y-2 bg-zinc-800 p-4 rounded-md" style={style}>
+      <div className="flex justify-between">
+        <h4>Properties</h4>
+        <GripVertical className="cursor-grab" {...listeners} />
+      </div>
       <Separator></Separator>
       {properties.map((property, index) => (
         <Property key={index} {...property} />

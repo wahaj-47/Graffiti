@@ -28,14 +28,14 @@ function Property(props: GPropertySpecifiers<Tool<any>, keyof Tool<any>>) {
 export function DetailsPanel() {
   const { tool } = useTool();
   const properties = getGProps(tool);
-  const { transform, setNodeRef, listeners } = useDraggable();
+  const { transform, listeners } = useDraggable();
 
   const style = {
     transform: `translate(${transform.x}px, ${transform.y}px)`,
   };
 
   return (
-    <div ref={setNodeRef} className="absolute top-2 right-2 space-y-2 bg-zinc-800 p-4 rounded-md" style={style}>
+    <div className="absolute top-2 right-2 space-y-2 bg-zinc-800 p-4 rounded-md" style={style}>
       <div className="flex justify-between">
         <h4>Properties</h4>
         <GripVertical className="cursor-grab" {...listeners} />
